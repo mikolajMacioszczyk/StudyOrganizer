@@ -1,0 +1,79 @@
+﻿<Window x:Class="StudyOrganizer.WPF.Views.LoginView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StudyOrganizer.WPF.Views"
+        mc:Ignorable="d" ResizeMode="CanResize"
+        FontSize="25" WindowStartupLocation="CenterScreen"
+        Title="ShellView" Height="450" Width="750" Icon="../studyIcon.png">
+    <Window.Background>
+        <ImageBrush ImageSource="../study.jpg" />
+    </Window.Background>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="1">
+
+            <StackPanel.Resources>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background" Value="White" />
+                    <Setter Property="BorderBrush" Value="BurlyWood" />
+                </Style>
+            </StackPanel.Resources>
+
+            <!--Intro-->
+            <TextBlock Margin="0,50,0,0" TextAlignment="Center"
+                       x:Name="Intro" Text="Masz już konto?" />
+            
+            <!--Login-->
+            <StackPanel>
+                <TextBlock Text="Login:" />
+                <TextBox Name="Login" BorderBrush="BurlyWood">
+                    <TextBox.Resources>
+                        <Style TargetType="{x:Type TextBox}">
+                            <Style.Triggers>
+                                <Trigger Property="IsKeyboardFocused" Value="True">
+                                    <Setter Property="Background" Value="Bisque" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Resources>
+                </TextBox>
+            </StackPanel>
+
+            <!--Password-->
+            <StackPanel>
+                <TextBlock Text="Password:" />
+                <PasswordBox x:Name="Password">
+                    <PasswordBox.Resources>
+                        <Style TargetType="{x:Type PasswordBox}">
+                            <Style.Triggers>
+                                <Trigger Property="IsKeyboardFocused" Value="True">
+                                    <Setter Property="Background" Value="Bisque" />
+                                </Trigger>
+                            </Style.Triggers>
+                            <Setter Property="BorderBrush" Value="BurlyWood" />
+                        </Style>
+                    </PasswordBox.Resources>
+                </PasswordBox>
+            </StackPanel>
+
+            <Button x:Name="SignIn" Content="Sign In!" Width="150" Height="40"
+                    Margin="15" Click="SignIn_OnClick" />
+
+            <!--Register-->
+            <StackPanel HorizontalAlignment="Center" Margin="0,10">
+                <TextBlock Text="If you haven't been started yet," />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="come on " />
+                    <Button Content="Sign Up!" x:Name="SignUp" Margin="5,0"
+                            Width="120" Click="SignUp_OnClick" />
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

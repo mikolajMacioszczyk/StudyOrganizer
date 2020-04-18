@@ -1,0 +1,8 @@
+D:\C#\StudyOrganizer\StudyOrganizer.DLL\bin\Debug\netcoreapp3.1\StudyOrganizer.DLL.deps.json
+D:\C#\StudyOrganizer\StudyOrganizer.DLL\bin\Debug\netcoreapp3.1\StudyOrganizer.DLL.dll
+D:\C#\StudyOrganizer\StudyOrganizer.DLL\bin\Debug\netcoreapp3.1\StudyOrganizer.DLL.pdb
+D:\C#\StudyOrganizer\StudyOrganizer.DLL\obj\Debug\netcoreapp3.1\StudyOrganizer.DLL.csprojAssemblyReference.cache
+D:\C#\StudyOrganizer\StudyOrganizer.DLL\obj\Debug\netcoreapp3.1\StudyOrganizer.DLL.AssemblyInfoInputs.cache
+D:\C#\StudyOrganizer\StudyOrganizer.DLL\obj\Debug\netcoreapp3.1\StudyOrganizer.DLL.AssemblyInfo.cs
+D:\C#\StudyOrganizer\StudyOrganizer.DLL\obj\Debug\netcoreapp3.1\StudyOrganizer.DLL.dll
+D:\C#\StudyOrganizer\StudyOrganizer.DLL\obj\Debug\netcoreapp3.1\StudyOrganizer.DLL.pdb

@@ -1,0 +1,96 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "StudyOrganizer.DLL/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "compile": {
+          "bin/placeholder/StudyOrganizer.DLL.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/StudyOrganizer.DLL.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "StudyOrganizer.DLL/1.0.0": {
+      "type": "project",
+      "path": "../StudyOrganizer.DLL/StudyOrganizer.DLL.csproj",
+      "msbuildProject": "../StudyOrganizer.DLL/StudyOrganizer.DLL.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETCoreApp,Version=v3.1": [
+      "StudyOrganizer.DLL >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\macio\\.nuget\\packages\\": {},
+    "C:\\Microsoft\\Xamarin\\NuGet": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "D:\\C#\\StudyOrganizer\\StudyOrganizer.WPF\\StudyOrganizer.WPF.csproj",
+      "projectName": "StudyOrganizer.WPF",
+      "projectPath": "D:\\C#\\StudyOrganizer\\StudyOrganizer.WPF\\StudyOrganizer.WPF.csproj",
+      "packagesPath": "C:\\Users\\macio\\.nuget\\packages\\",
+      "outputPath": "D:\\C#\\StudyOrganizer\\StudyOrganizer.WPF\\obj\\",
+      "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Microsoft\\Xamarin\\NuGet"
+      ],
+      "configFilePaths": [
+        "C:\\Users\\macio\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "netcoreapp3.1"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "projectReferences": {
+            "D:\\C#\\StudyOrganizer\\StudyOrganizer.DLL\\StudyOrganizer.DLL.csproj": {
+              "projectPath": "D:\\C#\\StudyOrganizer\\StudyOrganizer.DLL\\StudyOrganizer.DLL.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "netcoreapp3.1": {
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          },
+          "Microsoft.WindowsDesktop.App.WPF": {
+            "privateAssets": "none"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

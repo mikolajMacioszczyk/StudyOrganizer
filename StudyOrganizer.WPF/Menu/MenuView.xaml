@@ -1,0 +1,91 @@
+﻿<Window x:Class="StudyOrganizer.WPF.Views.MenuView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StudyOrganizer.WPF"
+        mc:Ignorable="d" ResizeMode="CanResizeWithGrip"
+        FontSize="25" WindowStartupLocation="CenterScreen"
+        Title="Menu" Height="550" Width="700" Icon="../studyIcon.png">
+    <Window.Background>
+        <ImageBrush ImageSource="../study.jpg" Stretch="UniformToFill" />
+    </Window.Background>
+    <Window.CommandBindings>
+        <CommandBinding Command="Close"
+                        CanExecute="Exit_OnCanExecute"
+                        Executed="Exit_OnExecuted"
+                        />
+        <CommandBinding Command="local:CustomCommands.BackHomePage" 
+                        CanExecute="HomeCommand_OnCanExecute"
+                        />
+        <CommandBinding Command="local:CustomCommands.GoTaskPage" 
+                        CanExecute="TaskCommand_OnCanExecute"
+                        Executed="TaskCommand_OnExecuted"
+                        />
+        <CommandBinding Command="local:CustomCommands.GoSubjectsPage" 
+                        CanExecute="Subjects_OnCanExecute"
+                        Executed="Subjects_OnExecuted"
+                        />
+    </Window.CommandBindings>
+    <DockPanel>
+        <local:LeftNav DockPanel.Dock="Left" />
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="2*" x:Name="BottomRow" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="3*" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="1" HorizontalAlignment="Right"
+                            Margin="20">
+                    <TextBlock Text="{Binding Path=Name}" HorizontalAlignment="Right"
+                               Margin="10,5" />
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Path=Study}" Margin="10,5" />
+                        <TextBlock Text="{Binding Path=Semester}" Margin="10,5" />
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="4*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                
+                <TextBlock Text="Subjects:" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1" />
+                <ScrollViewer Grid.Column="1" Grid.Row="1" Height="Auto" VerticalScrollBarVisibility="Auto" 
+                              HorizontalAlignment="Center" Margin="0,0,20,20">
+                    <ItemsControl ItemsSource="{Binding Path=Subjects}">
+                        <ItemsControl.Resources>
+                            <Style TargetType="{x:Type Border}" x:Key="BorderStyle">
+                                <Setter Property="CornerRadius" Value="5" />
+                                <Setter Property="Background" Value="#d3dbe3" />
+                                <Setter Property="BorderBrush" Value="#a9bbd9" />
+                                <Setter Property="Padding" Value="10,5" />
+                                <Setter Property="Margin" Value="10" />
+                                <Setter Property="MinWidth" Value="400" />
+                            </Style>
+                        </ItemsControl.Resources>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Style="{StaticResource BorderStyle}">
+                                    <TextBlock Text="{Binding}" FontSize="18" />
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+        </Grid>
+    </DockPanel>
+</Window>

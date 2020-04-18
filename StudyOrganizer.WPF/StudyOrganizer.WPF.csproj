@@ -1,0 +1,68 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <UseWPF>true</UseWPF>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <None Remove="study.jpg" />
+      <None Remove="studyIcon.png" />
+      <None Remove="Views\study.jpg" />
+      <None Remove="Views\studyIcon.png" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\StudyOrganizer.DLL\StudyOrganizer.DLL.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Resource Include="Icones\books_icon.png" />
+      <Resource Include="Icones\delete.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <Resource Include="Icones\done.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <Resource Include="Icones\Home.png" />
+      <Resource Include="Icones\logout.png" />
+      <Resource Include="Icones\move.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <Resource Include="Icones\to_do.png" />
+      <Resource Include="Images\study.jpg" />
+      <Resource Include="Images\studyIcon.png" />
+      <Resource Include="study.jpg">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="Views\books_icon.png" />
+      <None Remove="to_do.png" />
+      <None Remove="logout.png" />
+      <Resource Include="studyIcon.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="iconfinder_minus_1645995.png" />
+      <None Remove="iconfinder_check_1930264.png" />
+      <None Remove="iconfinder_12_330407.png" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Home.png" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Resource Include="gold_star.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="Task\iconfinder_star_285661.png" />
+      <None Remove="Task\iconfinder_star_172558.png" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Resource Include="blank_star.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+    </ItemGroup>
+
+</Project>

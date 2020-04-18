@@ -1,0 +1,33 @@
+﻿<Window x:Class="StudyOrganizer.WPF.Subjects.SubjectsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:StudyOrganizer.WPF.Subjects"
+        xmlns:wpf="clr-namespace:StudyOrganizer.WPF"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+        Title="Subjects" Height="450" Width="800" Icon="../studyIcon.png">
+    <Window.Background>
+        <ImageBrush ImageSource="../study.jpg" Stretch="UniformToFill" />
+    </Window.Background>
+    <Window.CommandBindings>
+        <CommandBinding Command="Close"
+                        CanExecute="Exit_OnCanExecute"
+                        Executed="Exit_OnExecuted"
+        />
+        <CommandBinding Command="wpf:CustomCommands.BackHomePage" 
+                        CanExecute="HomeCommand_OnCanExecute"
+                        Executed="HomeCommand_OnExecuted"
+        />
+        <CommandBinding Command="wpf:CustomCommands.GoTaskPage" 
+                        CanExecute="TaskCommand_OnCanExecute"
+                        Executed="TaskCommand_OnExecuted"
+        />
+        <CommandBinding Command="wpf:CustomCommands.GoSubjectsPage" 
+                        CanExecute="Subjects_OnCanExecute"
+        />
+    </Window.CommandBindings>
+    <DockPanel>
+        <wpf:LeftNav DockPanel.Dock="Left" />
+    </DockPanel>
+</Window>
