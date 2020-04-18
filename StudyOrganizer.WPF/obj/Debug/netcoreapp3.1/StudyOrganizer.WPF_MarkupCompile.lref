@@ -1,10 +1,12 @@
 ﻿D:\C#\StudyOrganizer\StudyOrganizer.WPF\obj\Debug\netcoreapp3.1\GeneratedInternalTypeHelper.g.cs
 
-FD:\C#\StudyOrganizer\StudyOrganizer.WPF\LeftNav.xaml;;
-FD:\C#\StudyOrganizer\StudyOrganizer.WPF\Menu\MenuView.xaml;;
-FD:\C#\StudyOrganizer\StudyOrganizer.WPF\Subjects\SubjectsView.xaml;;
-FD:\C#\StudyOrganizer\StudyOrganizer.WPF\Task\Overlap.xaml;;
-FD:\C#\StudyOrganizer\StudyOrganizer.WPF\Task\TaskView.xaml;;
+FD:\C#\StudyOrganizer\StudyOrganizer.WPF\Pages\HomePage.xaml;;
+FD:\C#\StudyOrganizer\StudyOrganizer.WPF\Pages\SubjectsPage.xaml;;
+FD:\C#\StudyOrganizer\StudyOrganizer.WPF\Pages\TaskPage.xaml;;
+FD:\C#\StudyOrganizer\StudyOrganizer.WPF\UserControls\NavigationBar.xaml;;
+FD:\C#\StudyOrganizer\StudyOrganizer.WPF\UserControls\NewTaskPanel.xaml;;
+FD:\C#\StudyOrganizer\StudyOrganizer.WPF\UserControls\SingleTaskTemplate.xaml;;
 FD:\C#\StudyOrganizer\StudyOrganizer.WPF\Views\LoginView.xaml;;
+FD:\C#\StudyOrganizer\StudyOrganizer.WPF\Views\MenuView.xaml;;
 FD:\C#\StudyOrganizer\StudyOrganizer.WPF\Views\SignUpView.xaml;;
 

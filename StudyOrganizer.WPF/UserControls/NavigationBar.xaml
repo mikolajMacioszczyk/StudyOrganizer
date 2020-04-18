@@ -1,0 +1,87 @@
+﻿<UserControl x:Class="StudyOrganizer.WPF.UserControls.NavigationBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:StudyOrganizer.WPF.UserControls"
+             xmlns:converters="clr-namespace:StudyOrganizer.WPF.Converters"
+             xmlns:wpf="clr-namespace:StudyOrganizer.WPF"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <converters:BoolToVisibilityConverter x:Key="VisibilityConverter" />
+    </UserControl.Resources>
+    <Grid>
+        <ToolBarTray Orientation="Vertical">
+            <ToolBarTray.Resources>
+                <Style TargetType="{x:Type Label}" x:Key="SmallFontSize">
+                    <Setter Property="FontSize" Value="15"/>
+                </Style>
+                <Style TargetType="{x:Type Image}" x:Key="IconImage">
+                    <Setter Property="Width" Value="25"/>
+                </Style>
+                <Style TargetType="{x:Type TextBlock}" x:Key="ToolTipText">
+                    <Setter Property="FontSize" Value="10" />
+                    <Setter Property="FontWeight" Value="Light" />
+                </Style>
+            </ToolBarTray.Resources>
+            
+            <!--Main navigation panel-->
+            <ToolBar Background="AliceBlue">
+                <Button Command="wpf:CustomCommands.BackHomePage">
+                    <Button.ToolTip>
+                        <TextBlock Style="{StaticResource ToolTipText}">Wroć na stronę główną</TextBlock>
+                    </Button.ToolTip>
+                    <Button.Content>
+                        <StackPanel HorizontalAlignment="Center">
+                            <Image Source="../Icones/Home.png" Style="{StaticResource IconImage}" />
+                            <Label Content="Główna" Style="{StaticResource SmallFontSize}"/>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <Separator/>
+                <Button Command="wpf:CustomCommands.GoSubjectsPage">
+                    <Button.Content>
+                        <StackPanel HorizontalAlignment="Center">
+                            <Image Source="../Icones/books_icon.png" Style="{StaticResource IconImage}" />
+                            <Label Content="Przedmioty" Style="{StaticResource SmallFontSize}"/>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <Separator/>
+                <Button Command="wpf:CustomCommands.GoTaskPage">
+                    <Button.Content>
+                        <StackPanel HorizontalAlignment="Center">
+                            <Image Source="../Icones/to_do.png" Style="{StaticResource IconImage}" />
+                            <Label Content="Zadania" Style="{StaticResource SmallFontSize}"/>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <Separator/>
+                <Button Command="Close">
+                    <Button.ToolTip>
+                        <TextBlock Style="{StaticResource ToolTipText}">X+Ctrl</TextBlock>
+                    </Button.ToolTip>
+                    <Button.Content>
+                        <StackPanel HorizontalAlignment="Center">
+                            <Image Source="../Icones/logout.png" Style="{StaticResource IconImage}" />
+                            <Label Content="Wyloguj" Style="{StaticResource SmallFontSize}"/>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+            </ToolBar>
+            
+            <!--New Task Panel-->
+            <ToolBar Visibility="{Binding Path=IsNewTaskPanelVisible, Converter={StaticResource VisibilityConverter}}">
+                <Button Command="wpf:CustomCommands.AddNewTask">
+                    <Button.Content>
+                        <StackPanel HorizontalAlignment="Center">
+                            <Image Source="../Icones/newTask.png" Style="{StaticResource IconImage}" />
+                            <Label Content="Dodaj Nowe" Style="{StaticResource SmallFontSize}"/>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+            </ToolBar>
+        </ToolBarTray>
+    </Grid>
+</UserControl>

@@ -1,0 +1,24 @@
+﻿<Page x:Class="StudyOrganizer.WPF.Pages.TaskPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:StudyOrganizer.WPF.Pages"
+      xmlns:userControls="clr-namespace:StudyOrganizer.WPF.UserControls"
+      mc:Ignorable="d"
+      Title="TaskPage"
+      Unloaded="TaskPage_OnUnloaded">
+    <DockPanel>
+        <TabControl DockPanel.Dock="Top">
+            <TabItem Header="Zrealizowane">
+                <userControls:SingleTaskTemplate x:Name="RealizedItemsControl" Type="Realized"  />
+            </TabItem>
+            <TabItem Header="Aktualne" >
+                <userControls:SingleTaskTemplate x:Name="ActualItemsControl" Type="Actual" />
+            </TabItem>
+            <TabItem Header="Cele">
+                <userControls:SingleTaskTemplate x:Name="GoalsItemsControl" Type="Goals" />
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</Page>

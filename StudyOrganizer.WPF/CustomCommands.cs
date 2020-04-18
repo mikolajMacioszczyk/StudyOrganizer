@@ -25,5 +25,11 @@ namespace StudyOrganizer.WPF
             "GoSubjects",
             typeof(CustomCommands)
         );
+        
+        public static readonly RoutedUICommand AddNewTask = new RoutedUICommand(
+            "Add new Task to your list",
+            "AddNewTask",
+            typeof(CustomCommands)
+        );
 }
 }

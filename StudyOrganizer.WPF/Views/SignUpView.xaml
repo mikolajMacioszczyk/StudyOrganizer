@@ -8,9 +8,9 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         FontSize="25" ResizeMode="NoResize"
-        Title="SignUpView" Height="580" Width="750" Icon="../studyIcon.png">
+        Title="SignUpView" Height="580" Width="750" Icon="/Images/studyIcon.png" >
     <Window.Background>
-        <ImageBrush ImageSource="../study.jpg" TileMode="None" Stretch="UniformToFill" />
+        <ImageBrush ImageSource="../Images/study.jpg" TileMode="None" Stretch="UniformToFill" />
     </Window.Background>
     <Window.Resources>
         <viewModels:SignUpHelper x:Key="Verificator" />
