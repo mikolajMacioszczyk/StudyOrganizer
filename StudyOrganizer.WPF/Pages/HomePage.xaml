@@ -38,21 +38,21 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                
+                <TextBlock Text="" Width="0" Background="{Binding Path=ColorMode.Selected}" x:Name="Helper"/>
                 <TextBlock Text="Subjects:" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1" />
                 <ScrollViewer Grid.Column="1" Grid.Row="1" Height="Auto" VerticalScrollBarVisibility="Auto" 
                               HorizontalAlignment="Center" Margin="0,0,20,20">
+                    <ScrollViewer.Resources>
+                        <Style TargetType="{x:Type Border}" x:Key="BorderStyle">
+                            <Setter Property="CornerRadius" Value="5" />
+                            <Setter Property="Background" Value="{Binding ElementName= Helper, Path=Background}" />
+                            <Setter Property="BorderThickness" Value="0" />
+                            <Setter Property="Padding" Value="10,5" />
+                            <Setter Property="Margin" Value="10" />
+                            <Setter Property="MinWidth" Value="400" />
+                        </Style>
+                    </ScrollViewer.Resources>
                     <ItemsControl ItemsSource="{Binding Path=User.Subjects}">
-                        <ItemsControl.Resources>
-                            <Style TargetType="{x:Type Border}" x:Key="BorderStyle">
-                                <Setter Property="CornerRadius" Value="5" />
-                                <Setter Property="Background" Value="#d3dbe3" />
-                                <Setter Property="BorderBrush" Value="#a9bbd9" />
-                                <Setter Property="Padding" Value="10,5" />
-                                <Setter Property="Margin" Value="10" />
-                                <Setter Property="MinWidth" Value="400" />
-                            </Style>
-                        </ItemsControl.Resources>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Border Style="{StaticResource BorderStyle}">

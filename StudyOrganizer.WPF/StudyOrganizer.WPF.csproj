@@ -49,6 +49,14 @@
       <None Remove="iconfinder_minus_1645995.png" />
       <None Remove="iconfinder_check_1930264.png" />
       <None Remove="iconfinder_12_330407.png" />
+      <None Remove="Icones\iconfinder_user_close_settings_103765.png" />
+      <Resource Include="Icones\profile_image.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="Icones\iconfinder_edit-change-pencil_2931178.png" />
+      <Resource Include="Icones\change_icone.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
     </ItemGroup>
 
     <ItemGroup>

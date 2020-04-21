@@ -9,14 +9,16 @@
     <UserControl.Resources>
         <converters:BoolToStarConverter x:Key="IsStaredConverter"/>
     </UserControl.Resources>
-    <ScrollViewer>
+    <StackPanel>
+        <TextBlock Width="0" x:Name="Helper" />
+        <ScrollViewer>
         <ItemsControl x:Name="Control" ItemsSource="{Binding}">
             <ItemsControl.Resources>
                 <!--ItemControl Style -->
                 <Style TargetType="Border" x:Key="BorderStyle">
                     <Setter Property="Width" Value="300" />
                     <Setter Property="Margin" Value="10" />
-                    <Setter Property="Background" Value="#cce6fc" />
+                    <Setter Property="Background" Value="{Binding ElementName=Helper, Path=Background}" />
                     <Setter Property="Height" Value="250" />
                     <Setter Property="CornerRadius" Value="5" />
                     <Setter Property="BorderBrush" Value="#a6d1f7" />
@@ -85,7 +87,7 @@
 
                                 <DockPanel Grid.Row="1">
                                     <Label Content="{Binding Path=Deadline}"
-                                           ContentStringFormat="HH:MM:yyyy" FontSize="20"
+                                           ContentStringFormat="dd/MM/yyyy" FontSize="20"
                                            HorizontalAlignment="Center"
                                            DockPanel.Dock="Left" />
                                     <Button DockPanel.Dock="Right" Click="Award_OnClick"
@@ -109,4 +111,5 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
     </ScrollViewer>
+    </StackPanel>
 </UserControl>

@@ -28,6 +28,10 @@
                         CanExecute="Subjects_OnCanExecute"
                         Executed="Subjects_OnExecuted"
                         />
+        <CommandBinding Command="local:CustomCommands.GoAccountPage" 
+                        CanExecute="Account_OnCanExecute"
+                        Executed="Account_OnExecuted"
+                        />
         <CommandBinding Command="local:CustomCommands.AddNewTask" 
                         CanExecute="AddNewTask_OnCanExecute"
                         Executed="AddNewTask_OnExecute"

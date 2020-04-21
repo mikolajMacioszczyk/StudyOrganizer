@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using StudyOrganizer.DLL.Models;
+using StudyOrganizer.WPF.ViewModels;
 
 namespace StudyOrganizer.WPF.UserControls
 {
@@ -17,10 +19,16 @@ namespace StudyOrganizer.WPF.UserControls
     {
         public SchoolTaskList ThisSchoolTaskList { get; set; }
         public SchoolTaskListType Type { get; set; }
+        public SolidColorBrush ColorStyle { get; set; }
         
         public SingleTaskTemplate()
-        {
+        {   
             InitializeComponent();
+        }
+
+        public void AddColor(SolidColorBrush color)
+        {
+            ColorStyle = color;
         }
 
         private void Award_OnClick(object sender, RoutedEventArgs e)

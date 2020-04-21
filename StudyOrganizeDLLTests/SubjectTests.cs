@@ -13,10 +13,10 @@ namespace StudyOrganizeDLLTests
         [Test]
         public void BuilderTest()
         {
-            var subject = Subject.GetBuilder().WithName("Fiza").WeeklyDuration(2).Type(SubjectTypes.Wyklad)
-                .WithName("AiSD").WeeklyDuration(3).GetSubject();
+            var subject = Subject.GetBuilder().WithName("Fiza").DayAndHour(new WeeklyDate(DayOfWeek.Czwartek,12)).Type(SubjectTypes.Wyklad)
+                .WithName("AiSD").GetSubject();
 
-            var expected = "AiSD, Type: Wyklad, 3 hours in week";
+            var expected = "AiSD, Type: Wyklad, Day: Czwartek, Hour: 12";
             var result = subject.ToString();
 
             Assert.AreEqual(expected,result);

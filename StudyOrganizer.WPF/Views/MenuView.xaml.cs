@@ -26,7 +26,8 @@ namespace StudyOrganizer.WPF.Views
             {
                 new HomePage(_model),
                 new SubjectsPage(_model),
-                new TaskPage(_model)
+                new TaskPage(_model),
+                new AccountPage(_model)
             };
             _pageIndex = 0;
             ApplicationCommands.Close.InputGestures.Add(new KeyGesture(Key.X, ModifierKeys.Control));
@@ -77,6 +78,7 @@ namespace StudyOrganizer.WPF.Views
         {
             _pageIndex = 1;
             MainFrame.Navigate(_pages[_pageIndex]);
+            _model.IsNewSubjectPanelVisible = true;
         }
 
         private void AddNewTask_OnCanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -86,7 +88,24 @@ namespace StudyOrganizer.WPF.Views
         
         private void AddNewTask_OnExecute(object sender, ExecutedRoutedEventArgs e)
         {
-            //otworz dialog
+            NewTaskView newTaskView = new NewTaskView();
+            SchoolTask userNewTask = newTaskView.OpenNewTaskView();
+            if (userNewTask != null)
+            {
+                _model.User.TaskList.Planned.Add(userNewTask);
+            }
         }
+
+        private void Account_OnCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = _pageIndex != 3;
+        }
+
+        private void Account_OnExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            _pageIndex = 3;
+            MainFrame.Navigate(_pages[_pageIndex]);
+        }
+
     }
 }

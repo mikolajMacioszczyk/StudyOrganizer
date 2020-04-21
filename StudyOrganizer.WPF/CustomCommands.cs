@@ -26,9 +26,21 @@ namespace StudyOrganizer.WPF
             typeof(CustomCommands)
         );
         
+        public static readonly RoutedUICommand GoAccountPage = new RoutedUICommand(
+            "Account settings",
+            "GoAccount",
+            typeof(CustomCommands)
+        );
+        
         public static readonly RoutedUICommand AddNewTask = new RoutedUICommand(
             "Add new Task to your list",
             "AddNewTask",
+            typeof(CustomCommands)
+        );
+        
+        public static readonly RoutedUICommand AddNewSubject = new RoutedUICommand(
+            "Add new Subject to your list",
+            "AddNewSubject",
             typeof(CustomCommands)
         );
 }

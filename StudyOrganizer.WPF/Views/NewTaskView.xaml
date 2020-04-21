@@ -1,0 +1,89 @@
+﻿<Window x:Class="StudyOrganizer.WPF.Views.NewTaskView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:StudyOrganizer.WPF.Views"
+        mc:Ignorable="d" Icon="../Images/study.jpg"
+        SizeToContent="Height"
+        FontSize="20"
+        Title="Add new Task" Height="450" Width="700">
+    <Window.Background>
+        <ImageBrush ImageSource="../Images/study.jpg" />
+    </Window.Background>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        
+        <!--Else Info Stack Panel-->
+        <StackPanel Grid.Column="0" Grid.Row="0" Margin="10,10,0,0">
+            <Border CornerRadius="8" HorizontalAlignment="Center">
+                <Border.Background>
+                    <SolidColorBrush Color="AliceBlue" Opacity="0.8" />
+                </Border.Background>
+                
+                <TextBlock Text="Tytuł zadania:" Padding="8,3" />
+            </Border>
+            <TextBox x:Name="TitleText" Margin="0,0,0,10"/>
+            
+            <Border CornerRadius="8" HorizontalAlignment="Center">
+                <Border.Background>
+                    <SolidColorBrush Color="AliceBlue" Opacity="0.8" />
+                </Border.Background>
+                
+                <TextBlock Text="Opis:" Padding="8,3" />
+            </Border>
+            <TextBox x:Name="DescriptionText" Height="60"
+                     Margin="0,0,0,10" TextWrapping="Wrap"/>
+            
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                
+                <Border CornerRadius="5" HorizontalAlignment="Center"
+                        Grid.Column="0">
+                    <Border.Background>
+                        <SolidColorBrush Color="AliceBlue" Opacity="0.8" />
+                    </Border.Background>
+                
+                    <TextBlock Text="Wyróżnij:" Padding="8,3" />
+                </Border>
+                <CheckBox x:Name="IsAwardedCheckBox" Grid.Column="1" VerticalAlignment="Center" >
+                    <CheckBox.LayoutTransform>
+                        <ScaleTransform ScaleX="1.5" ScaleY="1.5" />
+                    </CheckBox.LayoutTransform>
+                </CheckBox>
+            </Grid>
+        </StackPanel>
+        
+        <!--Calendar Stack Panel-->
+        <StackPanel Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="Zaznacz termin wykonania:" TextAlignment="Center" TextWrapping="Wrap"/>
+            <Calendar SelectionMode="SingleDate" x:Name="Calendar"/>
+        </StackPanel>
+        
+        
+        <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1"
+                    Orientation="Horizontal" HorizontalAlignment="Center">
+            <StackPanel.Resources>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Width" Value="150" />
+                    <Setter Property="Margin" Value="20" />
+                    <Setter Property="Padding" Value="5" />
+                    <Setter Property="Background" Value="AliceBlue" />
+                    <Setter Property="BorderBrush" Value="AliceBlue" />
+                </Style>
+            </StackPanel.Resources>
+            <Button Content="Zatwierdź" Click="Accept_OnClick" />
+            <Button Content="Anuluj" Click="Dismiss_OnClick" />
+        </StackPanel>
+    </Grid>
+</Window>

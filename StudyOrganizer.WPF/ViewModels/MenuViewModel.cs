@@ -8,8 +8,9 @@ namespace StudyOrganizer.WPF.ViewModels
     public class MenuViewModel : INotifyPropertyChanged
     {
         private bool _isNewTaskPanelVisible;
+        private bool _isNewSubjectPanelVisible;
         public User User { get; }
-
+        public ColorMode ColorMode { get; set; }
         public bool IsNewTaskPanelVisible
         {
             get => _isNewTaskPanelVisible;
@@ -22,11 +23,25 @@ namespace StudyOrganizer.WPF.ViewModels
                 }
             }
         }
+        public bool IsNewSubjectPanelVisible
+        {
+            get => _isNewSubjectPanelVisible;
+            set
+            {
+                if (_isNewSubjectPanelVisible != value)
+                {       
+                    _isNewSubjectPanelVisible = value;
+                    OnPropertyChanged();                   
+                }
+            }
+        }
 
         public MenuViewModel(User user)
         {
             User = user;
             IsNewTaskPanelVisible = false;
+            IsNewSubjectPanelVisible = false;
+            ColorMode = new ColorMode();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

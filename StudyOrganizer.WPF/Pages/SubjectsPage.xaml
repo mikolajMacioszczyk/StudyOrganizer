@@ -4,9 +4,81 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:StudyOrganizer.WPF.Pages"
-      mc:Ignorable="d" FontSize="25"
-      Title="SubjectsPage">
-    <Grid>
-        <TextBlock Text="SubjectsPage" />
-    </Grid>
+      xmlns:wpf="clr-namespace:StudyOrganizer.WPF"
+      mc:Ignorable="d" FontSize="22"
+      Title="SubjectsPage"
+      Unloaded="SubjectsPage_OnUnloaded">
+    <Page.CommandBindings>
+        <CommandBinding Command="wpf:CustomCommands.AddNewSubject" 
+                        CanExecute="AddNewSubject_OnCanExecute"
+                        Executed="AddNewSubject_OnExecute"
+        />
+    </Page.CommandBindings>
+    <DockPanel VerticalAlignment="Center">
+        <TextBlock Text="Twój plan tygodnia:" DockPanel.Dock="Top"  Background="White" FontSize="25" TextAlignment="Center" Margin="0,0,0,10"/>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type Border}" x:Key="BorderStyle">
+                        <Setter Property="Background" Value="{Binding Path=ColorMode.Selected}" />
+                        <Setter Property="HorizontalAlignment" Value="Left" />
+                        <Setter Property="CornerRadius" Value="5"/>
+                    </Style>
+                    <Style TargetType="{x:Type TextBlock}" x:Key="TextStyle">
+                        <Setter Property="Padding" Value="10,2" />
+                        <Setter Property="HorizontalAlignment" Value="Center" />
+                    </Style>
+                    <Style TargetType="{x:Type Separator}" x:Key="SeparatorStyle">
+                        <Setter Property="Background" Value="{Binding Path=ColorMode.Selected}" />
+                        <Setter Property="Margin" Value="0,5,10,20" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Separator}">
+                                    <Border
+                                        Background="{TemplateBinding Background}" 
+                                        Height="6" 
+                                        CornerRadius="3"/>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </StackPanel.Resources>
+                
+                <Border Style="{StaticResource BorderStyle}">
+                    <TextBlock Text="Poniedziałek:" Style="{StaticResource TextStyle}" />
+                </Border>
+                <WrapPanel x:Name="Monday" />
+                <Separator Style="{StaticResource SeparatorStyle}" />
+                <Border Style="{StaticResource BorderStyle}">
+                    <TextBlock Text="Wtorek:" Style="{StaticResource TextStyle}" />
+                </Border>
+                <WrapPanel x:Name="Tuesday" />
+                <Separator Style="{StaticResource SeparatorStyle}"/>
+                <Border Style="{StaticResource BorderStyle}">
+                    <TextBlock Text="Środa:" Style="{StaticResource TextStyle}" />
+                </Border>
+                <WrapPanel x:Name="Wednesday" />
+                <Separator Style="{StaticResource SeparatorStyle}"/>
+                <Border Style="{StaticResource BorderStyle}">
+                    <TextBlock Text="Czwartek:" Style="{StaticResource TextStyle}" />
+                </Border>
+                <WrapPanel x:Name="Thursday" />
+                <Separator Style="{StaticResource SeparatorStyle}"/>
+                <Border Style="{StaticResource BorderStyle}">
+                    <TextBlock Text="Piątek:" Style="{StaticResource TextStyle}" />
+                </Border>
+                <WrapPanel x:Name="Friday" />
+                <Separator Style="{StaticResource SeparatorStyle}"/>
+                <Border Style="{StaticResource BorderStyle}">
+                    <TextBlock Text="Sobota:" Style="{StaticResource TextStyle}" />
+                </Border>
+                <WrapPanel x:Name="Saturday" />
+                <Separator Style="{StaticResource SeparatorStyle}"/>
+                <Border Style="{StaticResource BorderStyle}">
+                    <TextBlock Text="Niedziela:" Style="{StaticResource TextStyle}" />
+                </Border>
+                <WrapPanel x:Name="Sunday" />
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
 </Page>
