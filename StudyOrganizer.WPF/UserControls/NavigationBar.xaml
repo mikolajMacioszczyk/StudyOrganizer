@@ -4,16 +4,18 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:StudyOrganizer.WPF.UserControls"
+             xmlns:colorStyle="clr-namespace:StudyOrganizer.WPF.ColorStyle"
              xmlns:converters="clr-namespace:StudyOrganizer.WPF.Converters"
              xmlns:wpf="clr-namespace:StudyOrganizer.WPF"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <converters:BoolToVisibilityConverter x:Key="VisibilityConverter" />
+        <colorStyle:ColorMode x:Key="ColorMode" />
     </UserControl.Resources>
     <StackPanel>
         <!--Color ToolBarTray-->
-        <ToolBarTray Orientation="Horizontal">
+        <ToolBarTray Orientation="Horizontal" x:Name="ColorToolBar">
             <ToolBarTray.Resources>
                 <Style TargetType="{x:Type Border}" x:Key="ColorBorderStyle">
                     <Setter Property="Width" Value="15" />
@@ -26,17 +28,20 @@
                 </Style>
             </ToolBarTray.Resources>
             
-            <ToolBar HorizontalAlignment="Center">
+            <ToolBar HorizontalAlignment="Center" DataContext="{StaticResource ColorMode}">
                 <Border Style="{StaticResource ColorBorderStyle}" >
-                    <Button Style="{StaticResource ColorButtonStyle}" Background="Aqua"/>
+                    <Button Style="{StaticResource ColorButtonStyle}" Background="{Binding Path=FirstGroupCard}"
+                            Command="wpf:CustomCommands.ChangeColor" CommandParameter="1"/>
                 </Border> 
                 
                 <Border Style="{StaticResource ColorBorderStyle}" >
-                    <Button Style="{StaticResource ColorButtonStyle}" Background="Chocolate"/>
+                    <Button Style="{StaticResource ColorButtonStyle}" Background="{Binding Path=SecondGroupCard}"
+                            Command="wpf:CustomCommands.ChangeColor" CommandParameter="2"/>
                 </Border>    
                 
                 <Border Style="{StaticResource ColorBorderStyle}" >
-                    <Button Style="{StaticResource ColorButtonStyle}" Background="DarkSlateBlue"/>
+                    <Button Style="{StaticResource ColorButtonStyle}" Background="{Binding Path=ThirdGroupCard}"
+                            Command="wpf:CustomCommands.ChangeColor" CommandParameter="3"/>
                 </Border>    
             </ToolBar>
         </ToolBarTray>

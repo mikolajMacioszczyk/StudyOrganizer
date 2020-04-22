@@ -17,18 +17,11 @@ namespace StudyOrganizer.WPF.UserControls
     
     public partial class SingleTaskTemplate : UserControl
     {
-        public SchoolTaskList ThisSchoolTaskList { get; set; }
-        public SchoolTaskListType Type { get; set; }
-        public SolidColorBrush ColorStyle { get; set; }
-        
+        public SingleTaskTemplateModel Model { get; set; }
+        public SchoolTaskList SchoolTaskList { get; set; }
         public SingleTaskTemplate()
         {   
             InitializeComponent();
-        }
-
-        public void AddColor(SolidColorBrush color)
-        {
-            ColorStyle = color;
         }
 
         private void Award_OnClick(object sender, RoutedEventArgs e)
@@ -64,18 +57,18 @@ namespace StudyOrganizer.WPF.UserControls
         {
             SchoolTask schoolTask = DeleteFromListDataContextList(sender);
             
-            ThisSchoolTaskList.Realized.Add(schoolTask);
+            SchoolTaskList.Realized.Add(schoolTask);
         }
         
         private void MoveButton_OnClick(object sender, RoutedEventArgs e)
         {
-            switch (Type)
+            switch (Model.Type)
             {
                 case SchoolTaskListType.Realized:
-                    ThisSchoolTaskList.Actual.Add(DeleteFromListDataContextList(sender));
+                    SchoolTaskList.Actual.Add(DeleteFromListDataContextList(sender));
                     break;
                 case SchoolTaskListType.Actual:
-                    ThisSchoolTaskList.Planned.Add(DeleteFromListDataContextList(sender));
+                    SchoolTaskList.Planned.Add(DeleteFromListDataContextList(sender));
                     break;
                 case SchoolTaskListType.Goals:
                     break;
@@ -91,19 +84,19 @@ namespace StudyOrganizer.WPF.UserControls
             SchoolTask task = button.DataContext as SchoolTask;
 
 
-            switch (Type)
+            switch (Model.Type)
             {
                 case SchoolTaskListType.Realized:
-                    ThisSchoolTaskList.Realized.Remove(task);
-                    Control.ItemsSource = ThisSchoolTaskList.Realized;
+                    SchoolTaskList.Realized.Remove(task);
+                    Control.ItemsSource = SchoolTaskList.Realized;
                     break;
                 case SchoolTaskListType.Actual:
-                    ThisSchoolTaskList.Actual.Remove(task);
-                    Control.ItemsSource = ThisSchoolTaskList.Actual;
+                    SchoolTaskList.Actual.Remove(task);
+                    Control.ItemsSource = SchoolTaskList.Actual;
                     break;
                 case SchoolTaskListType.Goals:
-                    ThisSchoolTaskList.Planned.Remove(task);
-                    Control.ItemsSource = ThisSchoolTaskList.Planned;
+                    SchoolTaskList.Planned.Remove(task);
+                    Control.ItemsSource = SchoolTaskList.Planned;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

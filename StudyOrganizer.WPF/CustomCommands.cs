@@ -43,5 +43,11 @@ namespace StudyOrganizer.WPF
             "AddNewSubject",
             typeof(CustomCommands)
         );
+        
+        public static readonly RoutedUICommand ChangeColor = new RoutedUICommand(
+            "Changes main app style",
+            "ChangeColor",
+            typeof(CustomCommands)
+        );
 }
 }

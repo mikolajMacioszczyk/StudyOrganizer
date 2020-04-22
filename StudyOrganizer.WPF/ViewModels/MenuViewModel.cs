@@ -2,6 +2,7 @@
 using System.Runtime.CompilerServices;
 using StudyOrganizer.DLL.Annotations;
 using StudyOrganizer.DLL.Models;
+using StudyOrganizer.WPF.ColorStyle;
 
 namespace StudyOrganizer.WPF.ViewModels
 {
@@ -35,6 +36,10 @@ namespace StudyOrganizer.WPF.ViewModels
                 }
             }
         }
+        
+        public delegate void SubjectListChanged(Subject newSubject);
+
+        public event SubjectListChanged OnListChanged;
 
         public MenuViewModel(User user)
         {
@@ -42,6 +47,12 @@ namespace StudyOrganizer.WPF.ViewModels
             IsNewTaskPanelVisible = false;
             IsNewSubjectPanelVisible = false;
             ColorMode = new ColorMode();
+        }
+
+        public void AddSubject(Subject toAdd)
+        {
+            User.Subjects.Add(toAdd);
+            OnListChanged?.Invoke(toAdd);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

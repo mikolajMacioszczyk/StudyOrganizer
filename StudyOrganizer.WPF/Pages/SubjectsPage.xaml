@@ -8,19 +8,15 @@
       mc:Ignorable="d" FontSize="22"
       Title="SubjectsPage"
       Unloaded="SubjectsPage_OnUnloaded">
-    <Page.CommandBindings>
-        <CommandBinding Command="wpf:CustomCommands.AddNewSubject" 
-                        CanExecute="AddNewSubject_OnCanExecute"
-                        Executed="AddNewSubject_OnExecute"
-        />
-    </Page.CommandBindings>
     <DockPanel VerticalAlignment="Center">
         <TextBlock Text="Twój plan tygodnia:" DockPanel.Dock="Top"  Background="White" FontSize="25" TextAlignment="Center" Margin="0,0,0,10"/>
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel>
                 <StackPanel.Resources>
                     <Style TargetType="{x:Type Border}" x:Key="BorderStyle">
-                        <Setter Property="Background" Value="{Binding Path=ColorMode.Selected}" />
+                        <Setter Property="Background" Value="{Binding Path=ColorMode.Selected.MainColor}" />
+                        <Setter Property="BorderBrush" Value="{Binding Path=ColorMode.Selected.SecondColor}" />
+                        <Setter Property="BorderThickness" Value="1,1,3,3" />
                         <Setter Property="HorizontalAlignment" Value="Left" />
                         <Setter Property="CornerRadius" Value="5"/>
                     </Style>
@@ -29,7 +25,7 @@
                         <Setter Property="HorizontalAlignment" Value="Center" />
                     </Style>
                     <Style TargetType="{x:Type Separator}" x:Key="SeparatorStyle">
-                        <Setter Property="Background" Value="{Binding Path=ColorMode.Selected}" />
+                        <Setter Property="Background" Value="{Binding Path=ColorMode.Selected.BackColor}" />
                         <Setter Property="Margin" Value="0,5,10,20" />
                         <Setter Property="Template">
                             <Setter.Value>

@@ -1,15 +1,16 @@
 ﻿using System.Windows.Controls;
 using StudyOrganizer.DLL.Models;
+using StudyOrganizer.WPF.ViewModels;
 
 namespace StudyOrganizer.WPF.UserControls
 {
     public partial class SubjectTemplate : UserControl
     {
-        public Subject ThisSubject { get; set; }
-        public SubjectTemplate(Subject thisSubject)
+        public SubjectTemplateModel Model { get; set; }
+        public SubjectTemplate(SubjectTemplateModel model)
         {
-            ThisSubject = thisSubject;
-            DataContext = ThisSubject;
+            Model = model;
+            DataContext = model;
             InitializeComponent();
         }
     }

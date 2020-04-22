@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using StudyOrganizer.WPF.UserControls;
 using StudyOrganizer.WPF.ViewModels;
 
 namespace StudyOrganizer.WPF.Pages
@@ -10,18 +11,17 @@ namespace StudyOrganizer.WPF.Pages
         public TaskPage(MenuViewModel model)
         {
             Model = model;
+            DataContext = Model;
             InitializeComponent();
-            ActualItemsControl.DataContext = Model.User.TaskList.Actual;
-            ActualItemsControl.ThisSchoolTaskList = Model.User.TaskList;
-            ActualItemsControl.AddColor(Model.ColorMode.Selected);
             
-            RealizedItemsControl.DataContext = Model.User.TaskList.Realized;
-            RealizedItemsControl.ThisSchoolTaskList = Model.User.TaskList;
-            RealizedItemsControl.AddColor(Model.ColorMode.Selected);
+            ActualItemsControl.Model = new SingleTaskTemplateModel(Model.User.TaskList.Actual, Model.ColorMode, SchoolTaskListType.Actual);
+            ActualItemsControl.DataContext = ActualItemsControl.Model;
             
-            GoalsItemsControl.DataContext = Model.User.TaskList.Planned;
-            GoalsItemsControl.ThisSchoolTaskList = Model.User.TaskList;
-            GoalsItemsControl.AddColor(Model.ColorMode.Selected);
+            RealizedItemsControl.Model = new SingleTaskTemplateModel(Model.User.TaskList.Realized, Model.ColorMode, SchoolTaskListType.Realized);
+            RealizedItemsControl.DataContext = RealizedItemsControl.Model;
+
+            GoalsItemsControl.Model = new SingleTaskTemplateModel(Model.User.TaskList.Planned, Model.ColorMode, SchoolTaskListType.Goals);
+            GoalsItemsControl.DataContext = GoalsItemsControl.Model;
         }
 
         private void TaskPage_OnUnloaded(object sender, RoutedEventArgs e)

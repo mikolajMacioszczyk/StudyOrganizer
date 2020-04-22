@@ -11,9 +11,7 @@ namespace StudyOrganizer.DLL.Models
         public SubjectTypes Type { get; set; }
         public WeeklyDate WeeklyDate { get; set; }
 
-        private Subject()
-        {
-        }
+        private Subject() { }
 
         public override string ToString()
         {

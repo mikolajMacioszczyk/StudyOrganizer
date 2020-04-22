@@ -7,12 +7,12 @@
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
     <Border Width="200" Height="100" Margin="10"
-             Background="#cce6fc" BorderBrush="#a6d1f7"
+             Background="{Binding Path=ColorMode.Selected.MainColor}" BorderBrush="{Binding Path=ColorMode.Selected.SecondColor}"
              BorderThickness="1,1,4,4" CornerRadius="5">
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock Text="{Binding Path=Name}" TextAlignment="Center" Margin="3" FontSize="18" />
-            <TextBlock Text="{Binding Path=Type}" TextAlignment="Center" Margin="2" FontSize="16" />
-            <TextBlock Text="{Binding Path=WeeklyDate}" TextAlignment="Center" Margin="3" FontSize="14" />
+            <TextBlock Text="{Binding Path=ThisSubject.Name}" TextAlignment="Center" Margin="3" FontSize="18" />
+            <TextBlock Text="{Binding Path=ThisSubject.Type}" TextAlignment="Center" Margin="2" FontSize="16" />
+            <TextBlock Text="{Binding Path=ThisSubject.WeeklyDate}" TextAlignment="Center" Margin="3" FontSize="14" />
         </StackPanel>
     </Border>
 </UserControl>

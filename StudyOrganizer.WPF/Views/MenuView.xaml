@@ -13,29 +13,37 @@
     </Window.Background>
     <Window.CommandBindings>
         <CommandBinding Command="Close"
-                        CanExecute="Exit_OnCanExecute"
+                        CanExecute="ExecutionAlwaysTrue"
                         Executed="Exit_OnExecuted"
                         />
         <CommandBinding Command="local:CustomCommands.BackHomePage" 
                         CanExecute="HomeCommand_OnCanExecute"
                         Executed="HomeCommand_OnExecuted"
-                        />
+        />
         <CommandBinding Command="local:CustomCommands.GoTaskPage" 
                         CanExecute="TaskCommand_OnCanExecute"
                         Executed="TaskCommand_OnExecuted"
-                        />
+        />
         <CommandBinding Command="local:CustomCommands.GoSubjectsPage" 
                         CanExecute="Subjects_OnCanExecute"
                         Executed="Subjects_OnExecuted"
-                        />
+        />
         <CommandBinding Command="local:CustomCommands.GoAccountPage" 
                         CanExecute="Account_OnCanExecute"
                         Executed="Account_OnExecuted"
                         />
         <CommandBinding Command="local:CustomCommands.AddNewTask" 
-                        CanExecute="AddNewTask_OnCanExecute"
+                        CanExecute="ExecutionAlwaysTrue"
                         Executed="AddNewTask_OnExecute"
                         />
+        <CommandBinding Command="local:CustomCommands.ChangeColor" 
+                        CanExecute="ExecutionAlwaysTrue"
+                        Executed="ChangeColor_OnExecute"
+                        />
+        <CommandBinding Command="local:CustomCommands.AddNewSubject" 
+                        CanExecute="ExecutionAlwaysTrue"
+                        Executed="AddNewSubject_OnExecute"
+        />
     </Window.CommandBindings>
     <DockPanel>
         <controls:NavigationBar DockPanel.Dock="Left" />

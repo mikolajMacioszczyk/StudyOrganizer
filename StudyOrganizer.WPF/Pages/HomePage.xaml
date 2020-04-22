@@ -38,7 +38,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <TextBlock Text="" Width="0" Background="{Binding Path=ColorMode.Selected}" x:Name="Helper"/>
+                <TextBlock Text="" Width="0" Background="{Binding Path=ColorMode.Selected.MainColor}" x:Name="Helper"/>
                 <TextBlock Text="Subjects:" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1" />
                 <ScrollViewer Grid.Column="1" Grid.Row="1" Height="Auto" VerticalScrollBarVisibility="Auto" 
                               HorizontalAlignment="Center" Margin="0,0,20,20">

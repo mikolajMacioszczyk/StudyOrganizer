@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -13,11 +14,25 @@ namespace StudyOrganizer.WPF.Pages
     public partial class SubjectsPage : Page
     {
         public readonly MenuViewModel _model;
+        private List<WrapPanel> DayPanels;
+        private List<List<SubjectTemplate>> SubjectsPerDay = new List<List<SubjectTemplate>>() {
+            new List<SubjectTemplate>(),
+            new List<SubjectTemplate>(),
+            new List<SubjectTemplate>(),
+            new List<SubjectTemplate>(),
+            new List<SubjectTemplate>(),
+            new List<SubjectTemplate>(),
+            new List<SubjectTemplate>()
+        };
         public SubjectsPage(MenuViewModel model)
         {
             _model = model;
+            model.OnListChanged += SubjectAdded;
             DataContext = _model;
             InitializeComponent();
+            DayPanels = new List<WrapPanel>() {
+                Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday
+            };
             AssignSubjects();
         }
 
@@ -25,7 +40,68 @@ namespace StudyOrganizer.WPF.Pages
         {
             foreach (var subject in _model.User.Subjects)
             {
-                AddToPanel(subject);
+                AddToPanelAtTheBegin(subject);
+            }
+
+            for (int i = 0; i < DayPanels.Count; i++)
+            {
+                SortSubjectsListByIndex(i);
+                UpdatePanel(i);
+            }
+        }
+
+        private void SubjectAdded(Subject subject)
+        {
+            switch (subject.WeeklyDate.Day)
+            {
+                case DayOfWeek.Poniedziałek:
+                    AddNewSubjectToAccordingPanel(0,subject);
+                    break;
+                case DayOfWeek.Wtorek:
+                    AddNewSubjectToAccordingPanel(1,subject);
+                    break;
+                case DayOfWeek.Środa:
+                    AddNewSubjectToAccordingPanel(2,subject);
+                    break;
+                case DayOfWeek.Czwartek:
+                    AddNewSubjectToAccordingPanel(3,subject);
+                    break;
+                case DayOfWeek.Piątek:
+                    AddNewSubjectToAccordingPanel(4,subject);
+                    break;
+                case DayOfWeek.Sobota:
+                    AddNewSubjectToAccordingPanel(5,subject);
+                    break;
+                case DayOfWeek.Niedziela:
+                    AddNewSubjectToAccordingPanel(6,subject);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private void AddNewSubjectToAccordingPanel(int panelIndex, Subject newSubject)
+        {
+            DayPanels[panelIndex].Children.Clear();
+            SubjectsPerDay[panelIndex].Add(new SubjectTemplate(new SubjectTemplateModel(newSubject,_model.ColorMode)));
+            
+            SortSubjectsListByIndex(panelIndex);
+
+            UpdatePanel(panelIndex);
+        }
+
+        private void SortSubjectsListByIndex(int index)
+        {
+            SubjectsPerDay[index].Sort((x,y) => 
+                x.Model.ThisSubject.WeeklyDate.Hour > y.Model.ThisSubject.WeeklyDate.Hour ? 1 :
+                x.Model.ThisSubject.WeeklyDate.Hour < y.Model.ThisSubject.WeeklyDate.Hour ? -1 : 0);
+        }
+
+        private void UpdatePanel(int panelIndex)
+        {
+            foreach (var subject in SubjectsPerDay[panelIndex])
+            {
+                DayPanels[panelIndex].Children.Add(subject);
             }
         }
 
@@ -33,47 +109,31 @@ namespace StudyOrganizer.WPF.Pages
         {
             _model.IsNewSubjectPanelVisible = false;
         }
-        
-        private void AddNewSubject_OnCanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = true;
-        }
-        
-        private void AddNewSubject_OnExecute(object sender, ExecutedRoutedEventArgs e)
-        {
-            NewSubjectView subjectView = new NewSubjectView();
-            var subjectInput = subjectView.ShowAndGetSubject();
-            if (subjectInput != null)
-            {
-                _model.User.Subjects.Add(subjectInput);
-            }
-            
-        }
 
-        private void AddToPanel(Subject subject)
+        private void AddToPanelAtTheBegin(Subject subject)
         {
             switch (subject.WeeklyDate.Day)
             {
                 case DayOfWeek.Poniedziałek:
-                    Monday.Children.Add(new SubjectTemplate(subject));
+                    SubjectsPerDay[0].Add(new SubjectTemplate(new SubjectTemplateModel(subject,_model.ColorMode)));
                     break;
                 case DayOfWeek.Wtorek:
-                    Tuesday.Children.Add(new SubjectTemplate(subject));
+                    SubjectsPerDay[1].Add(new SubjectTemplate(new SubjectTemplateModel(subject,_model.ColorMode)));
                     break;
                 case DayOfWeek.Środa:
-                    Wednesday.Children.Add(new SubjectTemplate(subject));
+                    SubjectsPerDay[2].Add(new SubjectTemplate(new SubjectTemplateModel(subject,_model.ColorMode)));
                     break;
                 case DayOfWeek.Czwartek:
-                    Thursday.Children.Add(new SubjectTemplate(subject));
+                    SubjectsPerDay[3].Add(new SubjectTemplate(new SubjectTemplateModel(subject,_model.ColorMode)));
                     break;
                 case DayOfWeek.Piątek:
-                    Friday.Children.Add(new SubjectTemplate(subject));
+                    SubjectsPerDay[4].Add(new SubjectTemplate(new SubjectTemplateModel(subject,_model.ColorMode)));
                     break;
                 case DayOfWeek.Sobota:
-                    Saturday.Children.Add(new SubjectTemplate(subject));
+                    SubjectsPerDay[5].Add(new SubjectTemplate(new SubjectTemplateModel(subject,_model.ColorMode)));
                     break;
                 case DayOfWeek.Niedziela:
-                    Sunday.Children.Add(new SubjectTemplate(subject));
+                    SubjectsPerDay[6].Add(new SubjectTemplate(new SubjectTemplateModel(subject,_model.ColorMode)));
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
