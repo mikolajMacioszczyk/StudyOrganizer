@@ -16,33 +16,25 @@ namespace StudyOrganizer.DLL.DataBase
     {
         public static bool IsUserRegistered(string file, string login, string password)
         {
-            if (!File.Exists(file))
+            if (!File.Exists(file) || string.IsNullOrEmpty(login) || string.IsNullOrEmpty(password))
             {
                 return false;
             }
-
-            if (string.IsNullOrEmpty(login) || string.IsNullOrEmpty(password))
+            string[] whole = File.ReadAllLines(file);
+            string logCoded = Coder.CodeString(login);
+            for (int i = 0; i < whole.Length; i++)
             {
-                return false;
-            }
-            using (StreamReader reader = new StreamReader(file))
-            {
-                string[] whole = File.ReadAllLines(file);
-                string logCoded = Coder.CodeString(login);
-                for (int i = 0; i < whole.Length; i++)
+                if (whole[i].Equals(logCoded))
                 {
-                    if (whole[i].Equals(logCoded))
+                    if (Coder.CodeString(password).Equals(whole[++i]))
                     {
-                        if (Coder.CodeString(password).Equals(whole[++i]))
-                        {
-                            return true;
-                        }
-                        return false;
+                        return true;
                     }
-                    i++;
+                    return false;
                 }
-                return false;
+                i++;
             }
+            return false;
         }
 
         public static User GetUser(string file, string login, string password)
@@ -51,7 +43,6 @@ namespace StudyOrganizer.DLL.DataBase
             {
                 throw new UserNotInDatabaseException("User not in database");
             }
-
             return GetUserFromFile(login + file);
         }
 
@@ -97,11 +88,10 @@ namespace StudyOrganizer.DLL.DataBase
             {
                 throw new InvalidInputException("Login mustn't be empty");
             }
-            string[] before = File.ReadAllLines(file);
             string codedOld = Coder.CodeString(oldLogin);
             string codedNew = Coder.CodeString(newLogin);
             bool isUpdated = false;
-            string[] after = before.Select(log =>
+            string[] fileContent = File.ReadAllLines(file).Select(log =>
             {
                 if (codedOld.Equals(log))
                 {
@@ -121,7 +111,7 @@ namespace StudyOrganizer.DLL.DataBase
 
             using (StreamWriter writer = new StreamWriter(file))
             {
-                foreach (var userDates in after)
+                foreach (var userDates in fileContent)
                 {
                     writer.WriteLine(userDates);
                 }

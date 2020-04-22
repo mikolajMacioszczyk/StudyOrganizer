@@ -5,11 +5,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:StudyOrganizer.WPF.Views"
         FontSize="22"
-        mc:Ignorable="d" Icon="../Images/studyIcon.png"
+        mc:Ignorable="d" Icon="../Icones/studyIcon.png"
         ResizeMode="NoResize"
         Title="NewSubjectView" Height="450" Width="420">
     <Window.Background>
-        <ImageBrush ImageSource="../Images/study.jpg" Stretch="UniformToFill" />
+        <ImageBrush ImageSource="../Icones/study.jpg" Stretch="UniformToFill" />
     </Window.Background>
     <StackPanel HorizontalAlignment="Center" Margin="10" MinWidth="350">
         <StackPanel.Resources>

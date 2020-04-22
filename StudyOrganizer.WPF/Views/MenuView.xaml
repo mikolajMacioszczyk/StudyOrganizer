@@ -7,9 +7,9 @@
         xmlns:controls="clr-namespace:StudyOrganizer.WPF.UserControls"
         mc:Ignorable="d" ResizeMode="CanResizeWithGrip"
         FontSize="25" WindowStartupLocation="CenterScreen"
-        Title="Menu" Height="550" Width="800" Icon="../Images/studyIcon.png">
+        Title="Menu" Height="550" Width="800" Icon="../Icones/studyIcon.png">
     <Window.Background>
-        <ImageBrush ImageSource="../Images/study.jpg" Stretch="UniformToFill" />
+        <ImageBrush ImageSource="../Icones/study.jpg" Stretch="UniformToFill" />
     </Window.Background>
     <Window.CommandBindings>
         <CommandBinding Command="Close"

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -83,7 +84,10 @@ namespace StudyOrganizer.WPF.Pages
         private void AddNewSubjectToAccordingPanel(int panelIndex, Subject newSubject)
         {
             DayPanels[panelIndex].Children.Clear();
-            SubjectsPerDay[panelIndex].Add(new SubjectTemplate(new SubjectTemplateModel(newSubject,_model.ColorMode)));
+            var toAdd = new SubjectTemplate(new SubjectTemplateModel(newSubject, _model.ColorMode));
+            toAdd.OnDelete += SubjectDeletedHandler;
+            toAdd.OnEdite += EditSubjectHandler;
+            SubjectsPerDay[panelIndex].Add(toAdd);
             
             SortSubjectsListByIndex(panelIndex);
 
@@ -112,31 +116,84 @@ namespace StudyOrganizer.WPF.Pages
 
         private void AddToPanelAtTheBegin(Subject subject)
         {
+            var toAdd = new SubjectTemplate(new SubjectTemplateModel(subject, _model.ColorMode));
+            toAdd.OnDelete += SubjectDeletedHandler;
+            toAdd.OnEdite += EditSubjectHandler;
             switch (subject.WeeklyDate.Day)
             {
                 case DayOfWeek.Poniedziałek:
-                    SubjectsPerDay[0].Add(new SubjectTemplate(new SubjectTemplateModel(subject,_model.ColorMode)));
+                    SubjectsPerDay[0].Add(toAdd);
                     break;
                 case DayOfWeek.Wtorek:
-                    SubjectsPerDay[1].Add(new SubjectTemplate(new SubjectTemplateModel(subject,_model.ColorMode)));
+                    SubjectsPerDay[1].Add(toAdd);
                     break;
                 case DayOfWeek.Środa:
-                    SubjectsPerDay[2].Add(new SubjectTemplate(new SubjectTemplateModel(subject,_model.ColorMode)));
+                    SubjectsPerDay[2].Add(toAdd);
                     break;
                 case DayOfWeek.Czwartek:
-                    SubjectsPerDay[3].Add(new SubjectTemplate(new SubjectTemplateModel(subject,_model.ColorMode)));
+                    SubjectsPerDay[3].Add(toAdd);
                     break;
                 case DayOfWeek.Piątek:
-                    SubjectsPerDay[4].Add(new SubjectTemplate(new SubjectTemplateModel(subject,_model.ColorMode)));
+                    SubjectsPerDay[4].Add(toAdd);
                     break;
                 case DayOfWeek.Sobota:
-                    SubjectsPerDay[5].Add(new SubjectTemplate(new SubjectTemplateModel(subject,_model.ColorMode)));
+                    SubjectsPerDay[5].Add(toAdd);
                     break;
                 case DayOfWeek.Niedziela:
-                    SubjectsPerDay[6].Add(new SubjectTemplate(new SubjectTemplateModel(subject,_model.ColorMode)));
+                    SubjectsPerDay[6].Add(toAdd);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private void SubjectDeletedHandler(Subject subject)
+        {
+            switch (subject.WeeklyDate.Day)
+            {
+                case DayOfWeek.Poniedziałek:
+                    DeleteAndUpdateList(0,subject);
+                    break;
+                case DayOfWeek.Wtorek:
+                    DeleteAndUpdateList(1,subject);
+                    break;
+                case DayOfWeek.Środa:
+                    DeleteAndUpdateList(2,subject);
+                    break;
+                case DayOfWeek.Czwartek:
+                    DeleteAndUpdateList(3,subject);
+                    break;
+                case DayOfWeek.Piątek:
+                    DeleteAndUpdateList(4,subject);
+                    break;
+                case DayOfWeek.Sobota:
+                    DeleteAndUpdateList(5,subject);
+                    break;
+                case DayOfWeek.Niedziela:
+                    DeleteAndUpdateList(6,subject);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private void DeleteAndUpdateList(int panelIndex, Subject subject)
+        {
+            _model.User.Subjects.Remove(subject);
+            DayPanels[panelIndex].Children.Clear();
+            SubjectsPerDay[panelIndex] = SubjectsPerDay[panelIndex].Where(x => x.Model.ThisSubject != subject).ToList();
+            UpdatePanel(panelIndex);
+        }
+
+        private void EditSubjectHandler(Subject subject)
+        {
+            NewSubjectView view = new NewSubjectView(new NewSubjectViewModel(_model.ColorMode));
+            Subject subjectInput = view.ShowAndGetSubject();
+            if (subjectInput != null)
+            {
+                SubjectDeletedHandler(subject);
+                _model.User.Subjects.Add(subjectInput);
+                SubjectAdded(subjectInput);
             }
         }
     }

@@ -4,12 +4,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:StudyOrganizer.WPF.Views"
-        mc:Ignorable="d" Icon="../Images/study.jpg"
+        mc:Ignorable="d" Icon="../Icones/study.jpg"
         SizeToContent="Height"
         FontSize="20"
         Title="Add new Task" Height="450" Width="700">
     <Window.Background>
-        <ImageBrush ImageSource="../Images/study.jpg" />
+        <ImageBrush ImageSource="../Icones/study.jpg" Stretch="UniformToFill" />
     </Window.Background>
     <Grid>
         <Grid.ColumnDefinitions>
