@@ -24,14 +24,12 @@ D:\C#\StudyOrganizer\StudyOrganizer.WPF\obj\Debug\netcoreapp3.1\Views\LoginView.
 D:\C#\StudyOrganizer\StudyOrganizer.WPF\obj\Debug\netcoreapp3.1\Pages\HomePage.g.cs
 D:\C#\StudyOrganizer\StudyOrganizer.WPF\obj\Debug\netcoreapp3.1\Pages\SubjectsPage.g.cs
 D:\C#\StudyOrganizer\StudyOrganizer.WPF\obj\Debug\netcoreapp3.1\Pages\TaskPage.g.cs
-D:\C#\StudyOrganizer\StudyOrganizer.WPF\obj\Debug\netcoreapp3.1\UserControls\SingleTaskTemplate.g.cs
 D:\C#\StudyOrganizer\StudyOrganizer.WPF\obj\Debug\netcoreapp3.1\Views\MenuView.g.cs
 D:\C#\StudyOrganizer\StudyOrganizer.WPF\obj\Debug\netcoreapp3.1\UserControls\NavigationBar.g.cs
 D:\C#\StudyOrganizer\StudyOrganizer.WPF\obj\Debug\netcoreapp3.1\Pages\HomePage.baml
 D:\C#\StudyOrganizer\StudyOrganizer.WPF\obj\Debug\netcoreapp3.1\Pages\SubjectsPage.baml
 D:\C#\StudyOrganizer\StudyOrganizer.WPF\obj\Debug\netcoreapp3.1\Pages\TaskPage.baml
 D:\C#\StudyOrganizer\StudyOrganizer.WPF\obj\Debug\netcoreapp3.1\UserControls\NavigationBar.baml
-D:\C#\StudyOrganizer\StudyOrganizer.WPF\obj\Debug\netcoreapp3.1\UserControls\SingleTaskTemplate.baml
 D:\C#\StudyOrganizer\StudyOrganizer.WPF\obj\Debug\netcoreapp3.1\Views\MenuView.baml
 D:\C#\StudyOrganizer\StudyOrganizer.WPF\obj\Debug\netcoreapp3.1\Views\NewTaskView.g.cs
 D:\C#\StudyOrganizer\StudyOrganizer.WPF\obj\Debug\netcoreapp3.1\Views\NewTaskView.baml
@@ -41,3 +39,5 @@ D:\C#\StudyOrganizer\StudyOrganizer.WPF\obj\Debug\netcoreapp3.1\UserControls\Sub
 D:\C#\StudyOrganizer\StudyOrganizer.WPF\obj\Debug\netcoreapp3.1\UserControls\SubjectTemplate.baml
 D:\C#\StudyOrganizer\StudyOrganizer.WPF\obj\Debug\netcoreapp3.1\Views\NewSubjectView.g.cs
 D:\C#\StudyOrganizer\StudyOrganizer.WPF\obj\Debug\netcoreapp3.1\Views\NewSubjectView.baml
+D:\C#\StudyOrganizer\StudyOrganizer.WPF\obj\Debug\netcoreapp3.1\UserControls\TaskTemplate.g.cs
+D:\C#\StudyOrganizer\StudyOrganizer.WPF\obj\Debug\netcoreapp3.1\UserControls\TaskTemplate.baml

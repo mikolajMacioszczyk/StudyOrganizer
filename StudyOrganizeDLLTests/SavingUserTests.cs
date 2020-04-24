@@ -13,8 +13,8 @@ namespace StudyOrganizeDLLTests
     {
         private static string File = "SavingUserTestsFile.bin";
 
-        [SetUp]
-        public void BeforeEach()
+        [TearDown]
+        public void AfterAll()
         {
             UserDataBase.ClearFile(File);
         }
@@ -24,6 +24,8 @@ namespace StudyOrganizeDLLTests
         {
             User user = new User("Name","Study",1,"Login");
             UserDataBase.SaveUser(File,user);
+            
+            UserDataBase.ClearFile("Login"+File);
         }
         
         [Test]
@@ -33,6 +35,8 @@ namespace StudyOrganizeDLLTests
             UserDataBase.SaveUser(File,user);
             var afterSerialization = UserDataBase.GetUserFromFile("Login" + File);
             Assert.AreEqual(user,afterSerialization);
+            
+            UserDataBase.ClearFile("Login"+File);
         }
         
         [Test]

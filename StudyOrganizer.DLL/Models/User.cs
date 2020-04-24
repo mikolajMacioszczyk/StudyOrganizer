@@ -72,17 +72,7 @@ namespace StudyOrganizer.DLL.Models
             Study = study;
             Semester = semester;
             Login = login;
-            Subjects = new List<Subject>
-            {
-                Subject.GetBuilder().Type(SubjectTypes.Cwiczenia).WithName("AK").DayAndHour(new WeeklyDate(DayOfWeek.Poniedziałek,10)).GetSubject(),
-                Subject.GetBuilder().Type(SubjectTypes.Wyklad).WithName("AiSD").DayAndHour(new WeeklyDate(DayOfWeek.Wtorek,10)).GetSubject(),
-                Subject.GetBuilder().Type(SubjectTypes.Lablatoria).WithName("Fizyka").DayAndHour(new WeeklyDate(DayOfWeek.Poniedziałek,10)).GetSubject(),
-                Subject.GetBuilder().Type(SubjectTypes.Wyklad).WithName("Fizyka").DayAndHour(new WeeklyDate(DayOfWeek.Środa,10)).GetSubject(),
-                Subject.GetBuilder().Type(SubjectTypes.Lablatoria).WithName("AiSK").DayAndHour(new WeeklyDate(DayOfWeek.Czwartek,10)).GetSubject(),
-                Subject.GetBuilder().Type(SubjectTypes.Cwiczenia).WithName("Dyskretna").DayAndHour(new WeeklyDate(DayOfWeek.Sobota,10)).GetSubject(),
-                Subject.GetBuilder().Type(SubjectTypes.Cwiczenia).WithName("Analiza").DayAndHour(new WeeklyDate(DayOfWeek.Piątek,10)).GetSubject(),
-                Subject.GetBuilder().Type(SubjectTypes.Lablatoria).WithName("SO").DayAndHour(new WeeklyDate(DayOfWeek.Czwartek,10)).GetSubject()
-            };
+            Subjects = new List<Subject>();
             TaskList = new SchoolTaskList();
         }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using StudyOrganizer.DLL.Annotations;
 
@@ -16,32 +17,34 @@ namespace StudyOrganizer.DLL.Models
 
         public SchoolTaskList(ObservableCollection<SchoolTask> realized, ObservableCollection<SchoolTask> actual, ObservableCollection<SchoolTask> planned)
         {
-            Planned = planned;
-            Actual = actual;
-            Realized = realized;
+            Planned = planned.Sort();
+            Actual = actual.Sort();
+            Realized = realized.Sort();
         }
 
         public SchoolTaskList()
         {
-            Planned = new ObservableCollection<SchoolTask>(){ new SchoolTask("Asembler AK","Nauczyć się używać funkcji skoku i opanować delay-slot",
-                true,DateTime.Now)};
-            Actual  = new ObservableCollection<SchoolTask>()
+            Planned = new ObservableCollection<SchoolTask>();
+            Actual = new ObservableCollection<SchoolTask>();
+            Realized = new ObservableCollection<SchoolTask>();
+        }
+        
+        public void ListChanged(SchoolTaskListType type)
+        {
+            switch (type)
             {
-                new SchoolTask("Analiza Cwiczenia","Przygotować się z szeregów i funkcji wielu zmiennych", 
-                    true, DateTime.Now.Add(TimeSpan.FromDays(10))), 
-                new SchoolTask("Analiza Cwiczenia","Przygotować się z szeregów i funkcji wielu zmiennych", 
-                    false, DateTime.Now.Add(TimeSpan.FromDays(10))),
-                new SchoolTask("Analiza Cwiczenia","Przygotować się z szeregów i funkcji wielu zmiennych", 
-                    false, DateTime.Now.Add(TimeSpan.FromDays(10))),
-                new SchoolTask("Analiza Cwiczenia","Przygotować się z szeregów i funkcji wielu zmiennych", 
-                    false, DateTime.Now.Add(TimeSpan.FromDays(10))),
-                new SchoolTask("Analiza Cwiczenia","Przygotować się z szeregów i funkcji wielu zmiennych", 
-                    false, DateTime.Now.Add(TimeSpan.FromDays(10))),
-                new SchoolTask("Analiza Cwiczenia","Przygotować się z szeregów i funkcji wielu zmiennych", 
-                    false, DateTime.Now.Add(TimeSpan.FromDays(10)))
-            };
-            Realized  = new ObservableCollection<SchoolTask>(){ new SchoolTask("AiSD Lista 4","Przygotować algorytmy sortujące wraz z odpowiednim GUI",
-                true,DateTime.Now.Subtract(TimeSpan.FromDays(5)))};
+                case SchoolTaskListType.Realized:
+                    Realized.Sort();
+                    break;
+                case SchoolTaskListType.Actual:
+                    Actual.Sort();
+                    break;
+                case SchoolTaskListType.Goals:
+                    Planned.Sort();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
+            }
         }
     }
 
@@ -82,6 +85,113 @@ namespace StudyOrganizer.DLL.Models
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        protected bool Equals(SchoolTask other)
+        {
+            return _isAwarded == other._isAwarded && Title == other.Title && Description == other.Description;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((SchoolTask) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(_isAwarded, Title, Description, Deadline);
+        }
+    }
+    
+    public enum SchoolTaskListType
+    {
+        Realized,
+        Actual,
+        Goals
+    }
+    
+    public static class Sorter
+    {
+        private static void Swap(ref ObservableCollection<SchoolTask> list, int index)
+        {
+            SchoolTask term = list[index];
+            list[index] = list[index+1];
+            list[index+1] = term;
+        }
+        public static ObservableCollection<SchoolTask> Sort(this ObservableCollection<SchoolTask> toSort)
+        {
+            Comparer<SchoolTask> byAwardComparer = new SchoolTaskAwardComparer();
+            Comparer<SchoolTask> byDeadlineComparer = new SchoolTaskDateComparer();
+            for (int i = 0; i < toSort.Count-1; i++)
+            {
+                bool isSorted = true;
+                for (int j = 0; j < toSort.Count-1; j++)
+                {
+                    int byAwardResult = byAwardComparer.Compare(toSort[j], toSort[j + 1]);
+                    if (byAwardResult == 1 || byAwardResult == 0 && byDeadlineComparer.Compare(toSort[j],toSort[j+1]) == 1)
+                    {
+                        Swap(ref toSort,j);
+                        isSorted = false;
+                    }
+                }
+                if (isSorted)
+                {
+                    break;
+                }
+            }
+
+            return toSort;
+        }
+    }    
+
+    class SchoolTaskAwardComparer : Comparer<SchoolTask>
+    {
+        public override int Compare(SchoolTask x, SchoolTask y)
+        {
+            if (!x.IsAwarded && y.IsAwarded)
+            {
+                return 1;
+            }
+
+            if (x.IsAwarded && !y.IsAwarded)
+            {
+                return -1;
+            }
+            return 0;
+        }
+    }
+    class SchoolTaskDateComparer : Comparer<SchoolTask>
+    {
+        public override int Compare(SchoolTask x, SchoolTask y)
+        {
+            if (x.Deadline.Year > y.Deadline.Year)
+            {
+                return 1;
+            }
+            if (x.Deadline.Year < y.Deadline.Year)
+            {
+                return -1;
+            }
+            if (x.Deadline.Month > y.Deadline.Month)
+            {
+                return 1;
+            }
+            if (x.Deadline.Month < y.Deadline.Month)
+            {
+                return -1;
+            }
+            if (x.Deadline.Day > y.Deadline.Day)
+            {
+                return 1;
+            }
+            if (x.Deadline.Day < y.Deadline.Day)
+            {
+                return -1;
+            }
+            return 0;
         }
     }
 }

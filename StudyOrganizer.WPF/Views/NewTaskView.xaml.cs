@@ -69,7 +69,6 @@ namespace StudyOrganizer.WPF.Views
             {
                 return DateTime.Now;
             }
-
             return (DateTime) date;
         }
     }

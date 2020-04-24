@@ -1,11 +1,12 @@
-﻿<UserControl x:Class="StudyOrganizer.WPF.UserControls.SingleTaskTemplate"
+﻿<UserControl x:Class="StudyOrganizer.WPF.UserControls.TaskTemplate"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:StudyOrganizer.WPF.UserControls"
              xmlns:converters="clr-namespace:StudyOrganizer.WPF.Converters"
-             mc:Ignorable="d">
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <converters:BoolToStarConverter x:Key="IsStaredConverter"/>
     </UserControl.Resources>
@@ -61,13 +62,13 @@
                                 </Button>
                                 <Button DockPanel.Dock="Right" Click="MoveButton_OnClick" Style="{StaticResource ButtonStyle}">
                                     <Button.ToolTip>
-                                        <TextBlock Style="{StaticResource ToolTipTextStyle}" Text="Dodaj do zrealizowanych" />
+                                        <TextBlock Style="{StaticResource ToolTipTextStyle}" Text="Przesuń zadanie" />
                                     </Button.ToolTip>
                                     <Image Source="../Icones/move.png" HorizontalAlignment="Right" />
                                 </Button>
                                 <Button Click="DoneButton_OnClick" Style="{StaticResource ButtonStyle}">
                                     <Button.ToolTip>
-                                        <TextBlock Style="{StaticResource ToolTipTextStyle}" Text="Przesuń zadanie" />
+                                        <TextBlock Style="{StaticResource ToolTipTextStyle}" Text="Dodaj do zrealizowanych" />
                                     </Button.ToolTip>
                                     <Image Source="../Icones/done.png" HorizontalAlignment="Center" />
                                 </Button>

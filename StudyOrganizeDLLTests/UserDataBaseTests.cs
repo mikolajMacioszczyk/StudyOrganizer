@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using NUnit.Framework;
 using StudyOrganizer.DLL.DataBase;
+using StudyOrganizer.DLL.Models;
 
 namespace StudyOrganizeDLLTests
 {
@@ -18,6 +19,12 @@ namespace StudyOrganizeDLLTests
             {
                 File.Delete(FilePath);
             }
+        }
+        
+        [TearDown]
+        public void AfterAll()
+        {
+            UserDataBase.ClearFile(FilePath);
         }
 
         [Test]
@@ -36,6 +43,8 @@ namespace StudyOrganizeDLLTests
 
             var result = UserDataBase.IsUserRegistered(FilePath, "Login", "Pa55word");
             Assert.IsTrue(result);
+            
+            UserDataBase.ClearFile("Login"+FilePath);
         }
 
         [Test]
@@ -59,6 +68,8 @@ namespace StudyOrganizeDLLTests
             UserDataBase.RegisterUser(FilePath,"anotherLogin","Pas55ord","name","study",2);
             var result = UserDataBase.IsLoginFree(FilePath, "login");
             Assert.IsTrue(result);
+            
+            UserDataBase.ClearFile("anotherLogin"+FilePath);
         }
         
         [Test]
@@ -67,6 +78,8 @@ namespace StudyOrganizeDLLTests
             UserDataBase.RegisterUser(FilePath,"login","Pas55ord","name","study",2);
             var result = UserDataBase.IsLoginFree(FilePath, "login");
             Assert.IsFalse(result);
+            
+            UserDataBase.ClearFile("login"+FilePath);
         }
     }
 }

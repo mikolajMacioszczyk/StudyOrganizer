@@ -20,6 +20,7 @@ namespace StudyOrganizeDLLTests
         public void AfterEach()
         {
             UserDataBase.ClearFile(FilePath);
+            UserDataBase.ClearFile("login"+FilePath);
         }
         
         [Test]
@@ -28,6 +29,7 @@ namespace StudyOrganizeDLLTests
             UserDataBase.UpdateLogin(FilePath,"login","login");
             var result = UserDataBase.IsUserRegistered(FilePath, "login", "password");
             Assert.IsTrue(result);
+            UserDataBase.ClearFile("login"+FilePath);
         }
         
         [Test]
@@ -42,12 +44,12 @@ namespace StudyOrganizeDLLTests
             UserDataBase.RegisterUser(FilePath, "login2","password2","name2","Study2",5);
 
             Assert.Throws<InvalidInputException>(() => { UserDataBase.UpdateLogin(FilePath, "login2", "login"); });
+            UserDataBase.ClearFile("login2"+FilePath);
         }
         
         [Test]
         public void UpdateNotExistingLogin()
         {
-
             Assert.Throws<InvalidInputException>(() => { UserDataBase.UpdateLogin(FilePath, "login2", "login3"); });
         }
         
@@ -60,6 +62,7 @@ namespace StudyOrganizeDLLTests
             
             var result2 = UserDataBase.IsUserRegistered(FilePath, "newLogin", "password");
             Assert.IsTrue(result2);
+            UserDataBase.ClearFile("newLogin"+FilePath);
         }
     }
 }

@@ -79,7 +79,8 @@ namespace StudyOrganizer.WPF.Views
             SchoolTask userNewTask = newTaskView.OpenNewTaskView();
             if (userNewTask != null)
             {
-                _model.User.TaskList.Planned.Add(userNewTask);
+                var page = (TaskPage) _pages[2];
+                page.AddSchoolTask(userNewTask);
             }
         }
         
