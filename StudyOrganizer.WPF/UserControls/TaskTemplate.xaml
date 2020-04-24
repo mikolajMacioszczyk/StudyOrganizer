@@ -1,28 +1,32 @@
-﻿<UserControl x:Class="StudyOrganizer.WPF.UserControls.SingleTaskTemplate"
+﻿<UserControl x:Class="StudyOrganizer.WPF.UserControls.TaskTemplate"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:StudyOrganizer.WPF.UserControls"
              xmlns:converters="clr-namespace:StudyOrganizer.WPF.Converters"
-             mc:Ignorable="d">
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <converters:BoolToStarConverter x:Key="IsStaredConverter"/>
     </UserControl.Resources>
-    <ScrollViewer>
-        <ItemsControl x:Name="Control" ItemsSource="{Binding}">
-            <ItemsControl.Resources>
+    <Grid>
+        <TextBlock x:Name="Helper" Width="0" Height="0" Background="{Binding Path=ColorMode.Selected.MainColor}" />
+        <TextBlock x:Name="Helper2" Width="0" Height="0" Background="{Binding Path=ColorMode.Selected.SecondColor}" />
+        <ScrollViewer>
+            <ScrollViewer.Resources>
                 <!--ItemControl Style -->
                 <Style TargetType="Border" x:Key="BorderStyle">
                     <Setter Property="Width" Value="300" />
                     <Setter Property="Margin" Value="10" />
-                    <Setter Property="Background" Value="#cce6fc" />
+                    <Setter Property="Background" Value="{Binding ElementName=Helper, Path=Background}" />
                     <Setter Property="Height" Value="250" />
                     <Setter Property="CornerRadius" Value="5" />
-                    <Setter Property="BorderBrush" Value="#a6d1f7" />
+                    <Setter Property="BorderBrush" Value="{Binding ElementName=Helper2, Path=Background}" />
                     <Setter Property="BorderThickness" Value="1,1,4,4" />
                 </Style>
-            </ItemsControl.Resources>
+            </ScrollViewer.Resources>
+            <ItemsControl x:Name="Control" ItemsSource="{Binding Path=ThisTaskList}" >
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
@@ -58,13 +62,13 @@
                                 </Button>
                                 <Button DockPanel.Dock="Right" Click="MoveButton_OnClick" Style="{StaticResource ButtonStyle}">
                                     <Button.ToolTip>
-                                        <TextBlock Style="{StaticResource ToolTipTextStyle}" Text="Dodaj do zrealizowanych" />
+                                        <TextBlock Style="{StaticResource ToolTipTextStyle}" Text="Przesuń zadanie" />
                                     </Button.ToolTip>
                                     <Image Source="../Icones/move.png" HorizontalAlignment="Right" />
                                 </Button>
                                 <Button Click="DoneButton_OnClick" Style="{StaticResource ButtonStyle}">
                                     <Button.ToolTip>
-                                        <TextBlock Style="{StaticResource ToolTipTextStyle}" Text="Przesuń zadanie" />
+                                        <TextBlock Style="{StaticResource ToolTipTextStyle}" Text="Dodaj do zrealizowanych" />
                                     </Button.ToolTip>
                                     <Image Source="../Icones/done.png" HorizontalAlignment="Center" />
                                 </Button>
@@ -85,7 +89,7 @@
 
                                 <DockPanel Grid.Row="1">
                                     <Label Content="{Binding Path=Deadline}"
-                                           ContentStringFormat="HH:MM:yyyy" FontSize="20"
+                                           ContentStringFormat="dd/MM/yyyy" FontSize="20"
                                            HorizontalAlignment="Center"
                                            DockPanel.Dock="Left" />
                                     <Button DockPanel.Dock="Right" Click="Award_OnClick"
@@ -109,4 +113,5 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
     </ScrollViewer>
+    </Grid>
 </UserControl>

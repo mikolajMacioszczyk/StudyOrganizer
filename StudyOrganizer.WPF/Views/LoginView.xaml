@@ -6,9 +6,9 @@
         xmlns:local="clr-namespace:StudyOrganizer.WPF.Views"
         mc:Ignorable="d" ResizeMode="CanResize"
         FontSize="25" WindowStartupLocation="CenterScreen"
-        Title="ShellView" Height="450" Width="750" Icon="/Images/studyIcon.png">
+        Title="ShellView" Height="450" Width="750" Icon="/Icones/studyIcon.png">
     <Window.Background>
-        <ImageBrush ImageSource="/Images/study.jpg"/>
+        <ImageBrush ImageSource="/Icones/study.jpg" Stretch="UniformToFill" />
     </Window.Background>
     <Grid>
         <Grid.ColumnDefinitions>

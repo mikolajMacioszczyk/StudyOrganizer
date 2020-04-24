@@ -1,4 +1,7 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
+using StudyOrganizer.WPF.ColorStyle;
+using StudyOrganizer.WPF.ViewModels;
 
 namespace StudyOrganizer.WPF.UserControls
 {
@@ -8,5 +11,6 @@ namespace StudyOrganizer.WPF.UserControls
         {
             InitializeComponent();
         }
+
     }
 }

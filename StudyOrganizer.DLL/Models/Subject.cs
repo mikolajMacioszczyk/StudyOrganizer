@@ -9,15 +9,13 @@ namespace StudyOrganizer.DLL.Models
     {
         public string Name { get; set; }
         public SubjectTypes Type { get; set; }
-        public int HoursPerWeek { get; set; }
+        public WeeklyDate WeeklyDate { get; set; }
 
-        private Subject()
-        {
-        }
+        private Subject() { }
 
         public override string ToString()
         {
-            return $"{Name}, {nameof(Type)}: {Type}, {HoursPerWeek} hours in week";
+            return $"{Name}, {nameof(Type)}: {Type}, {WeeklyDate}";
         }
 
         public static Builder GetBuilder() => new Builder();
@@ -46,9 +44,9 @@ namespace StudyOrganizer.DLL.Models
                 return this;
             }
 
-            public Builder WeeklyDuration(int time)
+            public Builder DayAndHour(WeeklyDate date)
             {
-                _currentBuild.HoursPerWeek = time;
+                _currentBuild.WeeklyDate = date;
                 return this;
             }
         }

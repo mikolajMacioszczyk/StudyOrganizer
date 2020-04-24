@@ -4,14 +4,49 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:StudyOrganizer.WPF.UserControls"
+             xmlns:colorStyle="clr-namespace:StudyOrganizer.WPF.ColorStyle"
              xmlns:converters="clr-namespace:StudyOrganizer.WPF.Converters"
              xmlns:wpf="clr-namespace:StudyOrganizer.WPF"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <converters:BoolToVisibilityConverter x:Key="VisibilityConverter" />
+        <colorStyle:ColorMode x:Key="ColorMode" />
     </UserControl.Resources>
-    <Grid>
+    <StackPanel>
+        <!--Color ToolBarTray-->
+        <ToolBarTray Orientation="Horizontal" x:Name="ColorToolBar">
+            <ToolBarTray.Resources>
+                <Style TargetType="{x:Type Border}" x:Key="ColorBorderStyle">
+                    <Setter Property="Width" Value="15" />
+                    <Setter Property="Height" Value="15" />
+                    <Setter Property="CornerRadius" Value="10" />
+                    <Setter Property="Margin" Value="5,2" />
+                </Style>
+                <Style TargetType="{x:Type Button}" x:Key="ColorButtonStyle">
+                    <Setter Property="BorderThickness" Value="0" />
+                </Style>
+            </ToolBarTray.Resources>
+            
+            <ToolBar HorizontalAlignment="Center" DataContext="{StaticResource ColorMode}">
+                <Border Style="{StaticResource ColorBorderStyle}" >
+                    <Button Style="{StaticResource ColorButtonStyle}" Background="{Binding Path=FirstGroupCard}"
+                            Command="wpf:CustomCommands.ChangeColor" CommandParameter="1"/>
+                </Border> 
+                
+                <Border Style="{StaticResource ColorBorderStyle}" >
+                    <Button Style="{StaticResource ColorButtonStyle}" Background="{Binding Path=SecondGroupCard}"
+                            Command="wpf:CustomCommands.ChangeColor" CommandParameter="2"/>
+                </Border>    
+                
+                <Border Style="{StaticResource ColorBorderStyle}" >
+                    <Button Style="{StaticResource ColorButtonStyle}" Background="{Binding Path=ThirdGroupCard}"
+                            Command="wpf:CustomCommands.ChangeColor" CommandParameter="3"/>
+                </Border>    
+            </ToolBar>
+        </ToolBarTray>
+        
+        <!--Action ToolBarTray-->
         <ToolBarTray Orientation="Vertical">
             <ToolBarTray.Resources>
                 <Style TargetType="{x:Type Label}" x:Key="SmallFontSize">
@@ -58,6 +93,15 @@
                     </Button.Content>
                 </Button>
                 <Separator/>
+                <Button Command="wpf:CustomCommands.GoAccountPage">
+                    <Button.Content>
+                        <StackPanel HorizontalAlignment="Center">
+                            <Image Source="../Icones/profile_image.png" Style="{StaticResource IconImage}" />
+                            <Label Content="Twoje Konto" Style="{StaticResource SmallFontSize}"/>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <Separator />
                 <Button Command="Close">
                     <Button.ToolTip>
                         <TextBlock Style="{StaticResource ToolTipText}">X+Ctrl</TextBlock>
@@ -82,6 +126,18 @@
                     </Button.Content>
                 </Button>
             </ToolBar>
+            
+            <!--New Subject Panel-->
+            <ToolBar Visibility="{Binding Path=IsNewSubjectPanelVisible, Converter={StaticResource VisibilityConverter}}">
+                <Button Command="wpf:CustomCommands.AddNewSubject">
+                    <Button.Content>
+                        <StackPanel HorizontalAlignment="Center">
+                            <Image Source="../Icones/newTask.png" Style="{StaticResource IconImage}" />
+                            <Label Content="Dodaj Nowy" Style="{StaticResource SmallFontSize}"/>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+            </ToolBar>
         </ToolBarTray>
-    </Grid>
+    </StackPanel>
 </UserControl>

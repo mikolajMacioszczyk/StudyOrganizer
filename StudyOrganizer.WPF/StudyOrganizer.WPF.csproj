@@ -25,7 +25,13 @@
       <Resource Include="Icones\delete.png">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Resource>
+      <Resource Include="Icones\delete_Subject.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
       <Resource Include="Icones\done.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <Resource Include="Icones\edit.png">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Resource>
       <Resource Include="Icones\gold_star.png">
@@ -36,19 +42,29 @@
       <Resource Include="Icones\move.png">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Resource>
+      <Resource Include="Icones\study.jpg">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <Resource Include="Icones\studyIcon.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
       <Resource Include="Icones\to_do.png" />
-      <Resource Include="Images\study.jpg">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Resource>
-      <Resource Include="Images\studyIcon.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Resource>
       <None Remove="Views\books_icon.png" />
       <None Remove="to_do.png" />
       <None Remove="logout.png" />
       <None Remove="iconfinder_minus_1645995.png" />
       <None Remove="iconfinder_check_1930264.png" />
       <None Remove="iconfinder_12_330407.png" />
+      <None Remove="Icones\iconfinder_user_close_settings_103765.png" />
+      <Resource Include="Icones\profile_image.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="Icones\iconfinder_edit-change-pencil_2931178.png" />
+      <Resource Include="Icones\change_icone.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="delete_Subject.png" />
+      <None Remove="edit.png" />
     </ItemGroup>
 
     <ItemGroup>

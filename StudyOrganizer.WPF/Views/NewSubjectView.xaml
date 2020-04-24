@@ -1,0 +1,99 @@
+﻿<Window x:Class="StudyOrganizer.WPF.Views.NewSubjectView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:StudyOrganizer.WPF.Views"
+        FontSize="22"
+        mc:Ignorable="d" Icon="../Icones/studyIcon.png"
+        ResizeMode="NoResize"
+        Title="NewSubjectView" Height="450" Width="420">
+    <Window.Background>
+        <ImageBrush ImageSource="../Icones/study.jpg" Stretch="UniformToFill" />
+    </Window.Background>
+    <StackPanel HorizontalAlignment="Center" Margin="10" MinWidth="350">
+        <StackPanel.Resources>
+            <Style TargetType="{x:Type TextBlock}" x:Key="TextBlockStyle">
+                <Setter Property="TextAlignment" Value="Center" />
+                <Setter Property="Opacity" Value="1" />
+                <Setter Property="Padding" Value="5,2" />
+            </Style>
+            <Style TargetType="{x:Type Border}" x:Key="CloudBorder">
+                <Setter Property="Background" Value="{Binding Path=ColorStyle.Selected.BackColor}" />
+                <Setter Property="Opacity" Value="0.92" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="CornerRadius" Value="7" />
+            </Style>
+            <Style TargetType="{x:Type Button}" x:Key="ButtonStyle">
+                <Setter Property="Background" Value="White" />
+                <Setter Property="Width" Value="120" />
+                <Setter Property="Margin" Value="20,0" />
+                <Setter Property="Padding" Value="0,4" />
+                <Setter Property="BorderThickness" Value="1,1,2,2" />
+                <Setter Property="BorderBrush" Value="{Binding Path=ColorStyle.Selected.MainColor}" />
+            </Style>
+            <Style TargetType="{x:Type TextBox}" x:Key="BoxStyle">
+                <Style.Triggers>
+                    <Trigger Property="IsKeyboardFocused" Value="True">
+                        <Setter Property="Background" Value="{Binding Path=ColorStyle.Selected.BackColor}" />
+                    </Trigger>
+                    <Trigger Property="IsKeyboardFocused" Value="False">
+                        <Setter Property="Background" Value="White" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </StackPanel.Resources>
+        
+        <Border Style="{StaticResource CloudBorder}" Margin="10,10,0,5">
+            <TextBlock Text="Nazwa Przedmiotu:" Style="{StaticResource TextBlockStyle}" />
+        </Border>
+        <TextBox x:Name="SubjectName" Style="{StaticResource BoxStyle}" />
+        
+        <Grid Margin="0,40,0,20" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            
+            <Border Style="{StaticResource CloudBorder}" Grid.Column="0">
+                <TextBlock Text="Typ Zajęć:" Style="{StaticResource TextBlockStyle}"/>
+            </Border>
+            <ComboBox x:Name="TypeComboBox" Margin="10,0,0,0" ItemsSource="{Binding Path=SubjectTypesValues}" SelectedIndex="0" Background="Azure"
+                      Grid.Row="0" Grid.Column="1">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" TextAlignment="Center" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <Border Style="{StaticResource CloudBorder}" Grid.Column="0" Grid.Row="1" Margin="5,20">
+                <TextBlock Text="Dzień tygodnia:" Style="{StaticResource TextBlockStyle}"/>
+            </Border>
+            <ComboBox x:Name="DayOfWeekComboBox" ItemsSource="{Binding Path=DayOfWeekValues}"
+                      SelectedIndex="0"
+                      Grid.Column="1" Grid.Row="1" Margin="5,20,0,20">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" TextAlignment="Center" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </Grid>
+
+        <Border Style="{StaticResource CloudBorder}">
+            <Label HorizontalAlignment="Center" Content="{Binding ElementName=HourSlider, Path=Value}" ContentStringFormat="Godzina: {0}"/>
+        </Border>
+        
+        <Slider x:Name="HourSlider" Maximum="24" TickFrequency="1" IsSnapToTickEnabled="True" />
+        
+        <StackPanel Orientation="Horizontal" Margin="0,30" HorizontalAlignment="Center">
+            <Button Content="Accept" Click="Accept_OnClick" Style="{StaticResource ButtonStyle}" />
+            <Button Content="Dismiss" Click="Dismiss_OnClick" Style="{StaticResource ButtonStyle}" />
+        </StackPanel>
+    </StackPanel>
+</Window>

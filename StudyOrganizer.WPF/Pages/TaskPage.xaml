@@ -11,13 +11,13 @@
     <DockPanel>
         <TabControl DockPanel.Dock="Top">
             <TabItem Header="Zrealizowane">
-                <userControls:SingleTaskTemplate x:Name="RealizedItemsControl" Type="Realized"  />
+                <userControls:TaskTemplate x:Name="RealizedItemsControl"  />
             </TabItem>
             <TabItem Header="Aktualne" >
-                <userControls:SingleTaskTemplate x:Name="ActualItemsControl" Type="Actual" />
+                <userControls:TaskTemplate x:Name="ActualItemsControl" />
             </TabItem>
             <TabItem Header="Cele">
-                <userControls:SingleTaskTemplate x:Name="GoalsItemsControl" Type="Goals" />
+                <userControls:TaskTemplate x:Name="GoalsItemsControl" />
             </TabItem>
         </TabControl>
     </DockPanel>

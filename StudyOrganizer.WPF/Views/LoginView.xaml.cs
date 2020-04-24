@@ -38,7 +38,7 @@ namespace StudyOrganizer.WPF.Views
             }
         }
         
-        public void SignInValidation(string login, string password)
+        private void SignInValidation(string login, string password)
         {
             if (string.IsNullOrEmpty(login) || string.IsNullOrEmpty(password))
                 throw new InvalidInputException("All fields must be filled out!");

@@ -25,7 +25,7 @@ namespace StudyOrganizer.WPF.Converters
             {
                 return true;
             }
-            if (text.Equals(@"../Icones/gold_star.png"))
+            if (text.Equals(@"..\gold_star.png"))
             {
                 return true;
             }
