@@ -29,18 +29,19 @@ namespace StudyOrganizer.WPF.Views
             try
             {
                 Validate();
+                
+                string name = SubjectName.Text;
+                SubjectTypes type = (SubjectTypes) Enum.Parse(typeof(SubjectTypes), TypeComboBox.SelectedItem.ToString());
+                DayOfWeek day = (DayOfWeek) Enum.Parse(typeof(DayOfWeek), DayOfWeekComboBox.SelectedItem.ToString());
+                int hour = (int) HourSlider.Value;
+                _model._returnedSubject = Subject.GetBuilder().Type(type).WithName(name)
+                    .DayAndHour(new WeeklyDate(day, hour)).GetSubject();
+                Close();
             }
             catch (InvalidInputException ex)
             {
                 MessageBox.Show(ex.Message,"Lack Of Information",MessageBoxButton.OK,MessageBoxImage.Error);
-            } 
-            string name = SubjectName.Text;
-            SubjectTypes type = (SubjectTypes) Enum.Parse(typeof(SubjectTypes), TypeComboBox.SelectedItem.ToString());
-            DayOfWeek day = (DayOfWeek) Enum.Parse(typeof(DayOfWeek), DayOfWeekComboBox.SelectedItem.ToString());
-            int hour = (int) HourSlider.Value;
-            _model._returnedSubject = Subject.GetBuilder().Type(type).WithName(name)
-                .DayAndHour(new WeeklyDate(day, hour)).GetSubject();
-            Close();
+            }
         }
 
         private void Validate()

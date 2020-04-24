@@ -4,7 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:StudyOrganizer.WPF.Pages"
-      xmlns:wpf="clr-namespace:StudyOrganizer.WPF"
+      xmlns:converters="clr-namespace:StudyOrganizer.WPF.Converters"
       mc:Ignorable="d" FontSize="22"
       Title="SubjectsPage"
       Unloaded="SubjectsPage_OnUnloaded">
@@ -40,40 +40,60 @@
                     </Style>
                 </StackPanel.Resources>
                 
-                <Border Style="{StaticResource BorderStyle}">
-                    <TextBlock Text="Poniedziałek:" Style="{StaticResource TextStyle}" />
-                </Border>
-                <WrapPanel x:Name="Monday" />
-                <Separator Style="{StaticResource SeparatorStyle}" />
-                <Border Style="{StaticResource BorderStyle}">
-                    <TextBlock Text="Wtorek:" Style="{StaticResource TextStyle}" />
-                </Border>
-                <WrapPanel x:Name="Tuesday" />
-                <Separator Style="{StaticResource SeparatorStyle}"/>
-                <Border Style="{StaticResource BorderStyle}">
-                    <TextBlock Text="Środa:" Style="{StaticResource TextStyle}" />
-                </Border>
-                <WrapPanel x:Name="Wednesday" />
-                <Separator Style="{StaticResource SeparatorStyle}"/>
-                <Border Style="{StaticResource BorderStyle}">
-                    <TextBlock Text="Czwartek:" Style="{StaticResource TextStyle}" />
-                </Border>
-                <WrapPanel x:Name="Thursday" />
-                <Separator Style="{StaticResource SeparatorStyle}"/>
-                <Border Style="{StaticResource BorderStyle}">
-                    <TextBlock Text="Piątek:" Style="{StaticResource TextStyle}" />
-                </Border>
-                <WrapPanel x:Name="Friday" />
-                <Separator Style="{StaticResource SeparatorStyle}"/>
-                <Border Style="{StaticResource BorderStyle}">
-                    <TextBlock Text="Sobota:" Style="{StaticResource TextStyle}" />
-                </Border>
-                <WrapPanel x:Name="Saturday" />
-                <Separator Style="{StaticResource SeparatorStyle}"/>
-                <Border Style="{StaticResource BorderStyle}">
-                    <TextBlock Text="Niedziela:" Style="{StaticResource TextStyle}" />
-                </Border>
-                <WrapPanel x:Name="Sunday" />
+                <StackPanel x:Name="MondayPanel">
+                    <Border Style="{StaticResource BorderStyle}">
+                        <TextBlock Text="Poniedziałek:" Style="{StaticResource TextStyle}" />
+                    </Border>
+                    <WrapPanel x:Name="Monday" />
+                    <Separator Style="{StaticResource SeparatorStyle}" />
+                </StackPanel>
+                
+                <StackPanel x:Name="TuesdayPanel">
+                    <Border Style="{StaticResource BorderStyle}">
+                        <TextBlock Text="Wtorek:" Style="{StaticResource TextStyle}" />
+                    </Border>
+                    <WrapPanel x:Name="Tuesday" />
+                    <Separator Style="{StaticResource SeparatorStyle}"/>
+                </StackPanel>
+                
+                <StackPanel x:Name="WednesdayPanel">
+                    <Border Style="{StaticResource BorderStyle}">
+                        <TextBlock Text="Środa:" Style="{StaticResource TextStyle}" />
+                    </Border>
+                    <WrapPanel x:Name="Wednesday" />
+                    <Separator Style="{StaticResource SeparatorStyle}"/>
+                </StackPanel>
+                
+                <StackPanel x:Name="ThursdayPanel">
+                    <Border Style="{StaticResource BorderStyle}">
+                        <TextBlock Text="Czwartek:" Style="{StaticResource TextStyle}" />
+                    </Border>
+                    <WrapPanel x:Name="Thursday" />
+                    <Separator Style="{StaticResource SeparatorStyle}"/>
+                </StackPanel>
+                
+                <StackPanel x:Name="FridayPanel">
+                    <Border Style="{StaticResource BorderStyle}">
+                        <TextBlock Text="Piątek:" Style="{StaticResource TextStyle}" />
+                    </Border>
+                    <WrapPanel x:Name="Friday" />
+                    <Separator Style="{StaticResource SeparatorStyle}"/>
+                </StackPanel>
+                
+                <StackPanel x:Name="SaturdayPanel">
+                    <Border Style="{StaticResource BorderStyle}">
+                        <TextBlock Text="Sobota:" Style="{StaticResource TextStyle}" />
+                    </Border>
+                    <WrapPanel x:Name="Saturday" />
+                    <Separator Style="{StaticResource SeparatorStyle}"/>
+                </StackPanel>
+                
+                <StackPanel x:Name="SundayPanel">
+                    <Border Style="{StaticResource BorderStyle}">
+                        <TextBlock Text="Niedziela:" Style="{StaticResource TextStyle}" />
+                    </Border>
+                    <WrapPanel x:Name="Sunday" />
+                </StackPanel>
             </StackPanel>
         </ScrollViewer>
     </DockPanel>

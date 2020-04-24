@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,6 +17,7 @@ namespace StudyOrganizer.WPF.Pages
     {
         public readonly MenuViewModel _model;
         private List<WrapPanel> DayPanels;
+        private List<StackPanel> StackPanels;
         private List<List<SubjectTemplate>> SubjectsPerDay = new List<List<SubjectTemplate>>() {
             new List<SubjectTemplate>(),
             new List<SubjectTemplate>(),
@@ -31,9 +33,22 @@ namespace StudyOrganizer.WPF.Pages
             model.OnListChanged += SubjectAdded;
             DataContext = _model;
             InitializeComponent();
+            Prepare();
+        }
+
+        private void Prepare()
+        {
             DayPanels = new List<WrapPanel>() {
                 Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday
             };
+            StackPanels = new List<StackPanel>()
+            {
+                MondayPanel,TuesdayPanel,WednesdayPanel,ThursdayPanel,FridayPanel,SaturdayPanel,SundayPanel
+            };
+            foreach (var panel in StackPanels)
+            {
+                panel.Visibility = Visibility.Collapsed;
+            }
             AssignSubjects();
         }
 
@@ -106,6 +121,7 @@ namespace StudyOrganizer.WPF.Pages
             foreach (var subject in SubjectsPerDay[panelIndex])
             {
                 DayPanels[panelIndex].Children.Add(subject);
+                StackPanels[panelIndex].Visibility = Visibility.Visible;
             }
         }
 
@@ -122,24 +138,31 @@ namespace StudyOrganizer.WPF.Pages
             switch (subject.WeeklyDate.Day)
             {
                 case DayOfWeek.Poniedziałek:
+                    StackPanels[0].Visibility = Visibility.Visible;
                     SubjectsPerDay[0].Add(toAdd);
                     break;
                 case DayOfWeek.Wtorek:
+                    StackPanels[1].Visibility = Visibility.Visible;
                     SubjectsPerDay[1].Add(toAdd);
                     break;
                 case DayOfWeek.Środa:
+                    StackPanels[2].Visibility = Visibility.Visible;
                     SubjectsPerDay[2].Add(toAdd);
                     break;
                 case DayOfWeek.Czwartek:
+                    StackPanels[3].Visibility = Visibility.Visible;
                     SubjectsPerDay[3].Add(toAdd);
                     break;
                 case DayOfWeek.Piątek:
+                    StackPanels[4].Visibility = Visibility.Visible;
                     SubjectsPerDay[4].Add(toAdd);
                     break;
                 case DayOfWeek.Sobota:
+                    StackPanels[5].Visibility = Visibility.Visible;
                     SubjectsPerDay[5].Add(toAdd);
                     break;
                 case DayOfWeek.Niedziela:
+                    StackPanels[6].Visibility = Visibility.Visible;
                     SubjectsPerDay[6].Add(toAdd);
                     break;
                 default:
@@ -182,6 +205,10 @@ namespace StudyOrganizer.WPF.Pages
             _model.User.Subjects.Remove(subject);
             DayPanels[panelIndex].Children.Clear();
             SubjectsPerDay[panelIndex] = SubjectsPerDay[panelIndex].Where(x => x.Model.ThisSubject != subject).ToList();
+            if (SubjectsPerDay[panelIndex].Count == 0)
+            {
+                StackPanels[panelIndex].Visibility = Visibility.Collapsed;
+            }
             UpdatePanel(panelIndex);
         }
 
