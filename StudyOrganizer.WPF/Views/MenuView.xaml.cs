@@ -40,7 +40,7 @@ namespace StudyOrganizer.WPF.Views
 
         private void Exit_OnExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            UserDataBase.SaveUser(LoginView.FILE, _model.User);
+            //UserDataBase.SaveUser(LoginView.FILE, _model.User);
             Application.Current.Shutdown(1);
         }
         

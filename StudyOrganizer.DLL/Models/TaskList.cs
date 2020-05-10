@@ -48,6 +48,11 @@ namespace StudyOrganizer.DLL.Models
         }
     }
 
+    public enum TaskGroup
+    {
+        Planned, Actual, Realized
+    }
+
     [Serializable]
     public class SchoolTask : INotifyPropertyChanged
     {

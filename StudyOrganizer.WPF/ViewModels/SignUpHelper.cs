@@ -15,7 +15,7 @@ namespace StudyOrganizer.WPF.ViewModels
 
         private string _password;
 
-        private int? _semester;
+        private int _semester;
 
         private string _study;
 
@@ -23,7 +23,6 @@ namespace StudyOrganizer.WPF.ViewModels
 
         public SignUpHelper()
         {
-            Semester = null;
             VerifyVisibility();
         }
 
@@ -79,22 +78,15 @@ namespace StudyOrganizer.WPF.ViewModels
             }
         }
 
-        public int? Semester
+        public int Semester
         {
             get => _semester;
             set
             {
                 if (_semester != value)
                 {
-                    if (value == 0)
-                    {
-                        _semester = null;
-                    }
-                    else
-                    {
-                        _semester = value;
-                        OnPropertyChanged();
-                    }
+                    _semester = value;
+                    OnPropertyChanged();
                 }
             }
         }
@@ -123,14 +115,14 @@ namespace StudyOrganizer.WPF.ViewModels
                 SubmitVisibility = Visibility.Collapsed;
         }
 
-        public void SubmitValidation()
+        /*public void SubmitValidation()
         {
             Validator.PasswordValidation(Password);
             if (!UserDataBase.IsLoginFree(LoginView.FILE, Login))
                 throw new InvalidInputException("Login already used");
 
             UserDataBase.RegisterUser(LoginView.FILE, Login, Password, Name, Study, (int) Semester);
-        }
+        }*/
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

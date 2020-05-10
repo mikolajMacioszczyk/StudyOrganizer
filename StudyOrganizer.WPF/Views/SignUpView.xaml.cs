@@ -12,9 +12,11 @@ namespace StudyOrganizer.WPF.Views
     /// </summary>
     public partial class SignUpView : Window
     {
+        private ConnectionToDb dbConnection;
         public SignUpView()
         {
             InitializeComponent();
+            dbConnection = new ConnectionToDb();
         }
 
         private void Submit_OnClick(object sender, RoutedEventArgs e)
@@ -37,10 +39,9 @@ namespace StudyOrganizer.WPF.Views
         {
             SignUpHelper helper = (SignUpHelper) Panel.DataContext;
             Validator.PasswordValidation(helper.Password);
-            if (!UserDataBase.IsLoginFree(LoginView.FILE, helper.Login))
+            if (!dbConnection.IsLoginFree(helper.Login))
                 throw new InvalidInputException("Login already used");
-            UserDataBase.RegisterUser(LoginView.FILE, helper.Login, helper.Password, helper.Name, helper.Study,
-                Convert.ToInt32(helper.Semester));
+            dbConnection.InsertUser(helper.Login, helper.Password, helper.Name, helper.Semester, helper.Study);
         }
 
         private void Password_OnLostFocus(object sender, RoutedEventArgs e)

@@ -11,10 +11,12 @@ namespace StudyOrganizer.DLL.Models
     [Serializable]
     public class User : INotifyPropertyChanged
     {
+        public int _userId { get; private set; }
         private string _name;
         private string _study;
-        private int _semester;
+        private int _semester;    
         private string _login;
+        private string _password;
 
         public string Name
         {
@@ -52,25 +54,37 @@ namespace StudyOrganizer.DLL.Models
                 OnPropertyChanged();
             }
         }
+        public string Password
+        {
+            get => _password;
+            set
+            {
+                _password = value;
+                OnPropertyChanged();
+            }
+        }
 
         public SchoolTaskList TaskList { get; set; }
         public List<Subject> Subjects { get; set; }
 
-        public User(string name, string study, int semester, string login, List<Subject> subjects, SchoolTaskList task)
+        public User(string name, string study, int semester, string login, string password, List<Subject> subjects, SchoolTaskList task)
         {
             Name = name;
             Study = study;
             Semester = semester;
             Login = login;
+            Password = password;
             TaskList = task;
             Subjects = subjects;
         }
 
-        public User(string name, string study, in int semester, string login)
+        public User(int id,string name, string study, in int semester, string login, string password)
         {
+            _userId = id;
             Name = name;
             Study = study;
             Semester = semester;
+            Password = password;
             Login = login;
             Subjects = new List<Subject>();
             TaskList = new SchoolTaskList();

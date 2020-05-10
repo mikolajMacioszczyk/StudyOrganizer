@@ -41,3 +41,4 @@ D:\C#\StudyOrganizer\StudyOrganizer.WPF\obj\Debug\netcoreapp3.1\Views\NewSubject
 D:\C#\StudyOrganizer\StudyOrganizer.WPF\obj\Debug\netcoreapp3.1\Views\NewSubjectView.baml
 D:\C#\StudyOrganizer\StudyOrganizer.WPF\obj\Debug\netcoreapp3.1\UserControls\TaskTemplate.g.cs
 D:\C#\StudyOrganizer\StudyOrganizer.WPF\obj\Debug\netcoreapp3.1\UserControls\TaskTemplate.baml
+D:\C#\StudyOrganizer\StudyOrganizer.WPF\bin\Debug\netcoreapp3.1\MySqlConnector.dll

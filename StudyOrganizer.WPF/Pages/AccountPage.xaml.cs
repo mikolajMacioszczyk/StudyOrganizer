@@ -40,7 +40,7 @@ namespace StudyOrganizer.WPF.Pages
                 Model.User.Login = _oldLogin;
             }
             
-            if (Model.User.Login == _oldLogin || UserDataBase.IsLoginFree(LoginView.FILE,Model.User.Login)){}
+            //if (Model.User.Login == _oldLogin || UserDataBase.IsLoginFree(LoginView.FILE,Model.User.Login)){}
         }
 
         private void Save_OnCanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -65,11 +65,11 @@ namespace StudyOrganizer.WPF.Pages
         {
             if (Model.User.Login != _oldLogin)
             {
-                if (!UserDataBase.IsLoginFree(LoginView.FILE,Model.User.Login))
+                /*if (!UserDataBase.IsLoginFree(LoginView.FILE,Model.User.Login))
                 {
                     throw new InvalidInputException("User already in Database.");
                 }
-                UserDataBase.UpdateLogin(LoginView.FILE,Model.User.Login,_oldLogin);
+                UserDataBase.UpdateLogin(LoginView.FILE,Model.User.Login,_oldLogin);*/
             }
             LoadContent();
         }

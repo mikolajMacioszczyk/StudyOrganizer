@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Windows;
 using StudyOrganizer.DLL.DataBase;
 using StudyOrganizer.DLL.Exceptions;
@@ -13,9 +14,11 @@ namespace StudyOrganizer.WPF.Views
     public partial class LoginView : Window
     {
         public static readonly string FILE = "MyUsers.txt";
+        private ConnectionToDb dbConnection;
         public LoginView()
         {
             InitializeComponent();
+            dbConnection = new ConnectionToDb();
         }
 
         private void SignIn_OnClick(object sender, RoutedEventArgs e)
@@ -23,8 +26,7 @@ namespace StudyOrganizer.WPF.Views
             try
             {
                 SignInValidation(Login.Text, Password.Password);
-                User user = UserDataBase.GetUser(FILE, Login.Text, Password.Password);
-
+                User user = dbConnection.GetUser(Login.Text, Password.Password);
                 new MenuView(user).Show();
                 Close();
             }

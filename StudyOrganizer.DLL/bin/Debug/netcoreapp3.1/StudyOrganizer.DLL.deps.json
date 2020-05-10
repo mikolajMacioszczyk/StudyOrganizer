@@ -7,8 +7,19 @@
   "targets": {
     ".NETCoreApp,Version=v3.1": {
       "StudyOrganizer.DLL/1.0.0": {
+        "dependencies": {
+          "MySqlConnector": "0.66.0"
+        },
         "runtime": {
           "StudyOrganizer.DLL.dll": {}
+        }
+      },
+      "MySqlConnector/0.66.0": {
+        "runtime": {
+          "lib/netcoreapp3.0/MySqlConnector.dll": {
+            "assemblyVersion": "0.66.0.0",
+            "fileVersion": "0.66.0.0"
+          }
         }
       }
     }
@@ -18,6 +29,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "MySqlConnector/0.66.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-laGcF5yxoWsBaoYJVkJXxsxiyIpz2lQn8FobpZiSGTWHEJQfhIlKHxhmXyUwD9WOsINKYJ3kmGNqkFojZW3VSA==",
+      "path": "mysqlconnector/0.66.0",
+      "hashPath": "mysqlconnector.0.66.0.nupkg.sha512"
     }
   }
 }
