@@ -5,13 +5,14 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using StudyOrganizer.DLL.Annotations;
+using StudyOrganizer.DLL.DataBase;
 
 namespace StudyOrganizer.DLL.Models
 {
     [Serializable]
     public class User : INotifyPropertyChanged
     {
-        public int _userId { get; private set; }
+        public int UserId { get; private set; }
         private string _name;
         private string _study;
         private int _semester;    
@@ -67,27 +68,22 @@ namespace StudyOrganizer.DLL.Models
         public SchoolTaskList TaskList { get; set; }
         public List<Subject> Subjects { get; set; }
 
-        public User(string name, string study, int semester, string login, string password, List<Subject> subjects, SchoolTaskList task)
-        {
-            Name = name;
-            Study = study;
-            Semester = semester;
-            Login = login;
-            Password = password;
-            TaskList = task;
-            Subjects = subjects;
-        }
-
         public User(int id,string name, string study, in int semester, string login, string password)
         {
-            _userId = id;
+            UserId = id;
             Name = name;
             Study = study;
             Semester = semester;
             Password = password;
             Login = login;
-            Subjects = new List<Subject>();
-            TaskList = new SchoolTaskList();
+            LoadLists();
+        }
+
+        private void LoadLists()
+        {
+            ConnectionToDb dbConnection = new ConnectionToDb();
+            TaskList = dbConnection.GetTaskList(UserId);
+            Subjects = dbConnection.GetSubjectList(UserId);
         }
 
         protected bool Equals(User other)

@@ -1,4 +1,8 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
+using MySql.Data.MySqlClient;
+using StudyOrganizer.DLL.Exceptions;
 using StudyOrganizer.DLL.Models;
 
 namespace StudyOrganizer.DLL.DataBase
@@ -14,17 +18,22 @@ namespace StudyOrganizer.DLL.DataBase
             _dbConnection = new ConnectionToDb();
         }
 
-        public UpdatesTransmitter(User user, ConnectionToDb dbConnection)
+        public UpdatesTransmitter([NotNull]User user, [NotNull] ConnectionToDb dbConnection)
         {
             _user = user;
             _dbConnection = dbConnection;
+        }
+        
+        public UpdatesTransmitter([NotNull] ConnectionToDb dbConnection)
+        {
+            _dbConnection = new ConnectionToDb();
         }
 
         public void UpdateLogin(string login)
         {
             if (!string.IsNullOrEmpty(login) && _dbConnection.IsLoginFree(login))
             {
-                _dbConnection.UpdateUser(_user._userId, login, _user.Password, _user.Name, _user.Semester, _user.Study);
+                _dbConnection.UpdateUser(_user.UserId, login, _user.Password, _user.Name, _user.Semester, _user.Study);
                 _user.Login = login;
             }
         }
@@ -33,7 +42,7 @@ namespace StudyOrganizer.DLL.DataBase
         {
             if (!_user.Password.Equals(password) && Validator.PasswordValidation(password))
             {
-                _dbConnection.UpdateUser(_user._userId, _user.Login, password, _user.Name, _user.Semester, _user.Study);
+                _dbConnection.UpdateUser(_user.UserId, _user.Login, password, _user.Name, _user.Semester, _user.Study);
                 _user.Password = password;
             }
         }
@@ -42,7 +51,7 @@ namespace StudyOrganizer.DLL.DataBase
         {
             if (!string.IsNullOrEmpty(name))
             {
-                _dbConnection.UpdateUser(_user._userId, _user.Login, _user.Password, name, _user.Semester, _user.Study);
+                _dbConnection.UpdateUser(_user.UserId, _user.Login, _user.Password, name, _user.Semester, _user.Study);
                 _user.Name = name;
             }
         }
@@ -51,7 +60,7 @@ namespace StudyOrganizer.DLL.DataBase
         {
             if (_user.Semester != semester && semester>0)
             {
-                _dbConnection.UpdateUser(_user._userId, _user.Login, _user.Password, _user. Name, semester, _user.Study);
+                _dbConnection.UpdateUser(_user.UserId, _user.Login, _user.Password, _user. Name, semester, _user.Study);
                 _user.Semester = semester;   
             }
         }
@@ -60,8 +69,57 @@ namespace StudyOrganizer.DLL.DataBase
         {
             if (!string.IsNullOrEmpty(study) && !study.Equals(_user.Study))
             {
-                _dbConnection.UpdateUser(_user._userId, _user.Login, _user.Password, _user. Name, _user.Semester, study);
+                _dbConnection.UpdateUser(_user.UserId, _user.Login, _user.Password, _user. Name, _user.Semester, study);
             }
+        }
+
+        public void DeleteTask([NotNull]SchoolTask task)
+        {
+            if (task == null)
+            {
+                return;
+            }
+            _dbConnection.DeleteSchoolTask(task.Id);
+        }
+        
+        public void UpdateTaskTittle(SchoolTask task, string title)
+        {    
+            if (!string.IsNullOrEmpty(title))
+            {
+                try
+                {
+                    _dbConnection.UpdateSchoolTask(task.Id, task.TaskListId,title, task.Description, task.TaskGroup, task.IsAwarded,task.Deadline);
+                    task.Title = title;
+                }
+                catch (MySqlException ignore) { }
+            }
+        }
+        
+        public void UpdateTaskDescription(SchoolTask task, string description)
+        {    
+            if (!string.IsNullOrEmpty(description))
+            {
+                _dbConnection.UpdateSchoolTask(task.Id, task.TaskListId,task.Title, description, task.TaskGroup, task.IsAwarded,task.Deadline);
+                task.Description = description;
+            }
+        }
+
+        public void UpdateTaskGroup(SchoolTask task, TaskGroup taskGroup)
+        {    
+            _dbConnection.UpdateSchoolTask(task.Id, task.TaskListId,task.Title, task.Description, taskGroup, task.IsAwarded,task.Deadline);
+            task.TaskGroup = taskGroup;
+        }
+        
+        public void UpdateTaskAward(SchoolTask task, bool isAwarded)
+        {    
+            _dbConnection.UpdateSchoolTask(task.Id, task.TaskListId,task.Title, task.Description, task.TaskGroup, isAwarded,task.Deadline);
+            task.IsAwarded = isAwarded;
+        }
+        
+        public void UpdateTaskDeadline(SchoolTask task, DateTime deadline)
+        {    
+            _dbConnection.UpdateSchoolTask(task.Id, task.TaskListId,task.Title, task.Description, task.TaskGroup, task.IsAwarded,deadline);
+            task.Deadline = deadline;
         }
     }
 }

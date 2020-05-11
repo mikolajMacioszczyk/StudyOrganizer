@@ -40,7 +40,6 @@ namespace StudyOrganizer.WPF.Views
 
         private void Exit_OnExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            //UserDataBase.SaveUser(LoginView.FILE, _model.User);
             Application.Current.Shutdown(1);
         }
         
@@ -75,7 +74,7 @@ namespace StudyOrganizer.WPF.Views
 
         private void AddNewTask_OnExecute(object sender, ExecutedRoutedEventArgs e)
         {
-            NewTaskView newTaskView = new NewTaskView();
+            NewTaskView newTaskView = new NewTaskView(_model.User.UserId);
             SchoolTask userNewTask = newTaskView.OpenNewTaskView();
             if (userNewTask != null)
             {
@@ -121,7 +120,7 @@ namespace StudyOrganizer.WPF.Views
 
         private void AddNewSubject_OnExecute(object sender, ExecutedRoutedEventArgs e)
         {
-            NewSubjectView subjectView = new NewSubjectView(new NewSubjectViewModel(_model.ColorMode));
+            NewSubjectView subjectView = new NewSubjectView(new NewSubjectViewModel(_model.ColorMode, _model.User.UserId));
             var subjectInput = subjectView.ShowAndGetSubject();
             if (subjectInput != null)
             {

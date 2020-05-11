@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Data;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualBasic.CompilerServices;
 using MySql.Data.MySqlClient;
 using StudyOrganizer.DLL.Exceptions;
 using StudyOrganizer.DLL.Models;
@@ -14,10 +15,10 @@ namespace StudyOrganizer.DLL.DataBase
     public class ConnectionToDb
     {
         private MySqlConnection _connection;
-        private string server;
-        private string database;
-        private string uid;
-        private string password;
+        private string _server;
+        private string _database;
+        private string _uid;
+        private string _password;
 
         public ConnectionToDb()
         {
@@ -26,11 +27,11 @@ namespace StudyOrganizer.DLL.DataBase
 
         private void Initialize()
         {
-            server = "localhost";
-            database = "study_organizer_db";
-            uid = "Miko";
-            password = "Pa55word";
-            string connectionString = "SERVER="+server+";"+"DATABASE="+database+";UID="+uid+";PASSWORD="+password+";";
+            _server = "localhost";
+            _database = "study_organizer_db";
+            _uid = "Miko";
+            _password = "Pa55word";
+            string connectionString = "SERVER="+_server+";"+"DATABASE="+_database+";UID="+_uid+";PASSWORD="+_password+";";
             
             _connection = new MySqlConnection(connectionString);
         }
@@ -68,16 +69,26 @@ namespace StudyOrganizer.DLL.DataBase
             }
         }
 
-        public void InsertSubject(int subjectListId, string subjectName, SubjectTypes type, DateTime dateTime)
+        public void InsertSubject(int subjectListId, string subjectName, SubjectTypes type, string day, int hour)
         {
+            if (string.IsNullOrEmpty(subjectName) || string.IsNullOrEmpty(day))
+            {
+                throw new InvalidInputException("Name and day cannot be empty");
+            }
             char subjectType = DetermineType(type);
             string query =
-                $"INSERT INTO subject (subject_list_id, name, subject_type, date) VALUES ('{subjectListId}', '{subjectName}', '{subjectType}', '{dateTime}')";
-            if (this.OpenConnection() == true)
+                $"INSERT INTO subject (subject_list_id, name, subject_type, day, hour) VALUES ('{subjectListId}', '{subjectName}', '{subjectType.ToString()}', '{day}', '{hour}')";
+            if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand(query,_connection);
-                cmd.ExecuteNonQuery();
-                this.CloseConnection();
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                finally
+                {
+                    this.CloseConnection();
+                }
             }
         }
         private char DetermineType(SubjectTypes type)
@@ -99,16 +110,47 @@ namespace StudyOrganizer.DLL.DataBase
             }
         }
         
+        private SubjectTypes DetermineType(char type)
+        {
+            switch (type)
+            {
+                case 'W':
+                    return SubjectTypes.Wyklad;
+                case 'C':
+                    return SubjectTypes.Cwiczenia;
+                case 'L':
+                    return SubjectTypes.Lablatoria;
+                case 'S':
+                    return SubjectTypes.Semianaria;
+                case 'P':
+                    return SubjectTypes.Projekt;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
+            }
+        }    
+        
         public void InsertSchoolTask(int schoolTaskId, string title, string description,TaskGroup group, bool isAwarded, DateTime deadline)
         {
+            if (string.IsNullOrEmpty(title) || string.IsNullOrEmpty(description))
+            {
+                throw new InvalidInputException("Title and description cannot be empty");
+            }
             char taskGroup = DetermineGroup(group);
+            byte boolValue = isAwarded == true ? (byte) 1 : (byte) 0;    
+            var sqlFormattedDate = deadline.Date.ToString("yyyy-MM-dd HH:mm:ss");
             string query =
-                $"INSERT INTO school_task (task_list_id, tittle, description, is_awarded, task_group, deadline) VALUES ('{schoolTaskId}', '{title}', '{description}', '{isAwarded}', '{taskGroup}', '{deadline}')";
-            if (this.OpenConnection() == true)
+                $"INSERT INTO school_task (task_list_id, tittle, description, is_awarded, task_group, deadline) VALUES ('{schoolTaskId}', '{title}', '{description}', '{boolValue}', '{taskGroup}', '{sqlFormattedDate}')";
+            if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand(query,_connection);
-                cmd.ExecuteNonQuery();
-                this.CloseConnection();
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                finally
+                {
+                    this.CloseConnection();
+                }
             }
         }
 
@@ -126,12 +168,27 @@ namespace StudyOrganizer.DLL.DataBase
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
         }
+        
+        private TaskGroup DetermineGroup(char c)
+        {
+            switch (c)
+            {
+                case 'P':
+                    return TaskGroup.Planned;
+                case 'A':
+                    return TaskGroup.Actual;
+                case 'R':
+                    return TaskGroup.Realized;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(c), c, null);
+            }
+        }
 
         public bool IsLoginFree(string login)
         {
             string query = $"Select count(*) from user where login = '{login}'";
             bool toReturn = true;
-            if (this.OpenConnection() == true)
+            if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand(query,_connection);
                 int userWithTheSameLoginCount = int.Parse(cmd.ExecuteScalar() + "");
@@ -157,9 +214,9 @@ namespace StudyOrganizer.DLL.DataBase
                 newUserQuery =
                     $"INSERT INTO user (login, password, name, semester, study) VALUES ('{login}', '{passwordHash}', '{name}', '{semester}', '{study}')";
             }
-            string taskListQuery = $"INSERT INTO task_list () VALUES ()";
-            string subjectListQuery = $"INSERT INTO subject_list () VALUES ()";
-            if (this.OpenConnection() == true)
+            string taskListQuery = "INSERT INTO task_list () VALUES ()";
+            string subjectListQuery = "INSERT INTO subject_list () VALUES ()";
+            if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand(newUserQuery,_connection);
                 MySqlCommand cmd2 = new MySqlCommand(taskListQuery,_connection);
@@ -180,22 +237,30 @@ namespace StudyOrganizer.DLL.DataBase
         public void UpdateSchoolTask(int schoolTaskId, int taskListId, string title, string description, TaskGroup group, bool isAwarded, DateTime deadline)
         {
             char taskGrop = DetermineGroup(group);
-            string query = $"UPDATE school_task SET tittle = '{title}', task_list_id = '{taskListId}', description = '{description}', task_group = '{taskGrop}', is_awarded = '{isAwarded}', deadline='{deadline}'" +
+            byte boolValue = (byte) (isAwarded == true ? 1 : 0);
+            var sqlFormattedDate = deadline.Date.ToString("yyyy-MM-dd HH:mm:ss");
+            string query = $"UPDATE school_task SET tittle = '{title}', task_list_id = '{taskListId}', description = '{description}', task_group = '{taskGrop}', is_awarded = '{boolValue}', deadline='{sqlFormattedDate}'" +
                            $"WHERE id = {schoolTaskId}";
-            if (this.OpenConnection() == true)
+            if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand(query, _connection);
-                cmd.ExecuteNonQuery();
-                this.CloseConnection();
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                finally
+                {
+                    this.CloseConnection();
+                }
             }
         }
         
-        public void UpdateSubject(int subjectId, int subjectLstId, string name, SubjectTypes type, DateTime time)
+        public void UpdateSubject(int subjectId, int subjectLstId, string name, SubjectTypes type, string day, int hour)
         {
             char subjectType =DetermineType(type);
-            string query = $"UPDATE subject SET subject_list_id = '{subjectLstId}', name = '{name}', subject_type = '{subjectType}', date = '{time}' " +
+            string query = $"UPDATE subject SET subject_list_id = '{subjectLstId}', name = '{name}', subject_type = '{subjectType}', day = '{day}', hour = '{hour}' " +
                            $"WHERE id = {subjectId}";
-            if (this.OpenConnection() == true)
+            if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand(query, _connection);
                 cmd.ExecuteNonQuery();
@@ -210,7 +275,7 @@ namespace StudyOrganizer.DLL.DataBase
                 string passwordHash = GetMD5Hash(md5Hash, password);
                 string query = $"UPDATE user SET login = '{login}', password = '{passwordHash}', name = '{name}', semester = '{semester}', study = '{study}' " +
                                $"WHERE id = {userId}";
-                if (this.OpenConnection() == true)
+                if (this.OpenConnection())
                 {
                     MySqlCommand cmd = new MySqlCommand(query, _connection);
                     cmd.ExecuteNonQuery();
@@ -222,7 +287,7 @@ namespace StudyOrganizer.DLL.DataBase
         public void DeleteSubject(int subjectId)
         {
             string query = $"DELETE FROM subject WHERE id = {subjectId}";
-            if (this.OpenConnection() == true)
+            if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand(query, _connection);
                 cmd.ExecuteNonQuery();
@@ -232,7 +297,7 @@ namespace StudyOrganizer.DLL.DataBase
 
         public void DeleteSchoolTask(int taskId)
         {
-            string query = $"DELETE FROM school_id WHERE id = {taskId}";
+            string query = $"DELETE FROM school_task WHERE id = {taskId}";
             if (this.OpenConnection() == true)
             {
                 MySqlCommand cmd = new MySqlCommand(query, _connection);
@@ -243,11 +308,17 @@ namespace StudyOrganizer.DLL.DataBase
         
         public void DeleteUser(int userId)
         {
-            string query = $"DELETE FROM user WHERE id = {userId}";
+            string deleteUserQuery = $"DELETE FROM user WHERE id = {userId}";
+            string deleteTasksQuery = $"DELETE FROM school_task WHERE task_list_id = {userId}";
+            string deleteSubjectsQuery = $"DELETE FROM subject WHERE subject_list_id = {userId}";
             if (this.OpenConnection() == true)
             {
-                MySqlCommand cmd = new MySqlCommand(query, _connection);
+                MySqlCommand cmd = new MySqlCommand(deleteUserQuery, _connection);
+                MySqlCommand cmd2 = new MySqlCommand(deleteTasksQuery, _connection);
+                MySqlCommand cmd3 = new MySqlCommand(deleteSubjectsQuery, _connection);
                 cmd.ExecuteNonQuery();
+                cmd2.ExecuteNonQuery();
+                cmd3.ExecuteNonQuery();
                 this.CloseConnection();
             }
         }
@@ -283,22 +354,119 @@ namespace StudyOrganizer.DLL.DataBase
             this.CloseConnection();
             throw new Exception("Something goes wrong");
         }
-
-        public int Count()
+        
+        public Subject GetSubject(string name)    
         {
-            throw new NotImplementedException();
-
+            string query = $"SELECT * FROM subject where name = '{name}'";
+            if (this.OpenConnection() ==  true)
+            {
+                MySqlCommand cmd = new MySqlCommand(query, _connection);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+                dataReader.Read();
+                int id = dataReader.GetInt32("id");
+                int subjectListId = dataReader.GetInt32("subject_list_id");
+                SubjectTypes type = DetermineType(dataReader.GetChar("subject_type"));
+                int hour = dataReader.GetInt32("hour");
+                DayOfWeek day = (DayOfWeek) Enum.Parse(typeof(DayOfWeek), dataReader.GetString("day"));
+                Subject readed = new Subject(id, subjectListId, name, type, day, hour);
+                this.CloseConnection();
+                return readed;    
+            }
+            this.CloseConnection();
+            throw new Exception("Something goes wrong");
+        }
+        
+        public SchoolTask GetSchoolTask(string tittle)    
+        {
+            string query = $"SELECT * FROM school_task where tittle = '{tittle}'";
+            if (this.OpenConnection() ==  true)
+            {
+                MySqlCommand cmd = new MySqlCommand(query, _connection);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+                dataReader.Read();
+                int id = dataReader.GetInt32("id");
+                int taskListId = dataReader.GetInt32("task_list_id");
+                string description = dataReader.GetString("description");
+                bool isAwarded = dataReader.GetBoolean("is_awarded");
+                TaskGroup group = DetermineGroup(dataReader.GetChar("task_group"));
+                DateTime deadline = dataReader.GetDateTime("deadline");
+                SchoolTask readed = new SchoolTask(id, taskListId, tittle, description,isAwarded, group, deadline);
+                this.CloseConnection();
+                return readed;    
+            }
+            this.CloseConnection();
+            throw new Exception("Something goes wrong");
         }
 
-        public void Backup()
+        public SchoolTaskList GetTaskList(int userId)
         {
-            throw new NotImplementedException();
-
+            string query = $"SELECT * FROM school_task where task_list_id = '{userId}'";
+            if (this.OpenConnection() ==  true)
+            {
+                List<SchoolTask> wholeTasks = new List<SchoolTask>();
+                MySqlCommand cmd = new MySqlCommand(query, _connection);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+                while (dataReader.Read())
+                {
+                    int id = dataReader.GetInt32("id");
+                    int taskListId = dataReader.GetInt32("task_list_id");
+                    string tittle = dataReader.GetString("tittle");
+                    string description = dataReader.GetString("description");
+                    bool isAwarded = dataReader.GetBoolean("is_awarded");
+                    TaskGroup group = DetermineGroup(dataReader.GetChar("task_group"));
+                    DateTime deadline = dataReader.GetDateTime("deadline");
+                    wholeTasks.Add(new SchoolTask(id, taskListId, tittle, description, isAwarded, group, deadline));
+                }   
+                ObservableCollection<SchoolTask> realized = new ObservableCollection<SchoolTask>();
+                ObservableCollection<SchoolTask> actual = new ObservableCollection<SchoolTask>();
+                ObservableCollection<SchoolTask> planned = new ObservableCollection<SchoolTask>();
+                foreach (var schoolTask in wholeTasks)
+                {
+                    switch (schoolTask.TaskGroup)
+                    {
+                        case TaskGroup.Planned:
+                            planned.Add(schoolTask);
+                            break;
+                        case TaskGroup.Actual:
+                            actual.Add(schoolTask);
+                            break;
+                        case TaskGroup.Realized:
+                            realized.Add(schoolTask);
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                }
+                this.CloseConnection();
+                return new SchoolTaskList(realized, actual, planned);
+            }
+            this.CloseConnection();
+            throw new Exception("Something goes wrong");
         }
-
-        public void Restore()
+        
+        public List<Subject> GetSubjectList(int userId)
         {
-            throw new NotImplementedException();
+            string query = $"SELECT * FROM subject where subject_list_id = '{userId}'";
+            if (this.OpenConnection() ==  true)
+            {
+                List<Subject> output = new List<Subject>();
+                MySqlCommand cmd = new MySqlCommand(query, _connection);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+                while (dataReader.Read())
+                {
+                    int id = dataReader.GetInt32("id");
+                    int subjectListId = dataReader.GetInt32("subject_list_id");
+                    string name = dataReader.GetString("name");
+                    SubjectTypes type = DetermineType(dataReader.GetChar("subject_type"));
+                    DayOfWeek day = (DayOfWeek) Enum.Parse(typeof(DayOfWeek), dataReader.GetString("day"));
+                    int hour = dataReader.GetInt32("hour");
+                    output.Add(new Subject(id, subjectListId, name, type, day,hour));
+                }   
+                this.CloseConnection();
+                return output;
+            }
+            this.CloseConnection();
+            throw new Exception("Something goes wrong");
         }
     }
 }

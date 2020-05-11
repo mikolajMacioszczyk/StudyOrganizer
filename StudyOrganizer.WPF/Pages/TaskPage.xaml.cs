@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using StudyOrganizer.DLL.DataBase;
 using StudyOrganizer.DLL.Models;
 using StudyOrganizer.WPF.UserControls;
 using StudyOrganizer.WPF.ViewModels;
@@ -10,6 +11,7 @@ namespace StudyOrganizer.WPF.Pages
     public partial class TaskPage : Page
     {
         private readonly MenuViewModel Model;
+        private UpdatesTransmitter _transmitter;
         public TaskPage(MenuViewModel model)
         {
             Model = model;
@@ -19,6 +21,7 @@ namespace StudyOrganizer.WPF.Pages
             PrepareTaskTemplate(ActualItemsControl,SchoolTaskListType.Actual);
             PrepareTaskTemplate(RealizedItemsControl,SchoolTaskListType.Realized);
             PrepareTaskTemplate(GoalsItemsControl,SchoolTaskListType.Goals);
+            _transmitter = new UpdatesTransmitter(new ConnectionToDb());
         }
 
         private void TaskPage_OnUnloaded(object sender, RoutedEventArgs e)
@@ -51,12 +54,28 @@ namespace StudyOrganizer.WPF.Pages
 
         public void AddSchoolTask(SchoolTask toAdd)
         {
-            Model.User.TaskList.Planned.Add(toAdd);
-            Model.User.TaskList.ListChanged(SchoolTaskListType.Goals);
+            switch (toAdd.TaskGroup)
+            {
+                case TaskGroup.Planned:
+                    Model.User.TaskList.Planned.Add(toAdd);
+                    Model.User.TaskList.ListChanged(SchoolTaskListType.Goals);
+                    break;
+                case TaskGroup.Actual:
+                    Model.User.TaskList.Actual.Add(toAdd);
+                    Model.User.TaskList.ListChanged(SchoolTaskListType.Actual);
+                    break;
+                case TaskGroup.Realized:
+                    Model.User.TaskList.Realized.Add(toAdd);
+                    Model.User.TaskList.ListChanged(SchoolTaskListType.Realized);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         private void SchoolTaskDeletedHandler(SchoolTask task, SchoolTaskListType type)
         {
+            _transmitter.DeleteTask(task);
             switch (type)
             {
                 case SchoolTaskListType.Realized:
@@ -80,11 +99,13 @@ namespace StudyOrganizer.WPF.Pages
                     Model.User.TaskList.Realized.Remove(task);
                     Model.User.TaskList.Actual.Add(task);
                     Model.User.TaskList.ListChanged(SchoolTaskListType.Actual);
+                    _transmitter.UpdateTaskGroup(task, TaskGroup.Actual);
                     break;
                 case SchoolTaskListType.Actual:
                     Model.User.TaskList.Actual.Remove(task);
                     Model.User.TaskList.Planned.Add(task);
                     Model.User.TaskList.ListChanged(SchoolTaskListType.Goals);
+                    _transmitter.UpdateTaskGroup(task, TaskGroup.Planned);
                     break;
                 case SchoolTaskListType.Goals:
                     break;
@@ -102,11 +123,13 @@ namespace StudyOrganizer.WPF.Pages
                     Model.User.TaskList.Actual.Remove(task);
                     Model.User.TaskList.Realized.Add(task);
                     Model.User.TaskList.ListChanged(SchoolTaskListType.Realized);
+                    _transmitter.UpdateTaskGroup( task, TaskGroup.Realized);
                     break;
                 case SchoolTaskListType.Goals:
                     Model.User.TaskList.Planned.Remove(task);
                     Model.User.TaskList.Realized.Add(task);
                     Model.User.TaskList.ListChanged(SchoolTaskListType.Realized);
+                    _transmitter.UpdateTaskGroup( task, TaskGroup.Realized);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);

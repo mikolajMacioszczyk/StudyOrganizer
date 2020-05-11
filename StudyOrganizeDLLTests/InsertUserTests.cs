@@ -22,7 +22,7 @@ namespace StudyOrganizeDLLTests
             var user = dbConnection.GetUser("TestLogin", "Pa55word");
             Assert.NotNull(user);
             Assert.That(user.Name, Is.EqualTo("TestName"));
-            dbConnection.DeleteUser(user._userId);
+            dbConnection.DeleteUser(user.UserId);
             Assert.Throws<UserNotInDatabaseException>(() => dbConnection.GetUser("TestLogin", "Pa55word"));
         }
         

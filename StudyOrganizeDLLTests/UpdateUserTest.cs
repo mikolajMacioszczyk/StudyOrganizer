@@ -25,7 +25,7 @@ namespace StudyOrganizeDLLTests
         [TearDown]
         public void TearDown()
         {
-            dbConnection.DeleteUser(_user._userId);
+            dbConnection.DeleteUser(_user.UserId);
         }
 
         [Test]

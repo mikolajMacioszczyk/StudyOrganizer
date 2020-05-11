@@ -44,19 +44,32 @@
             
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
                 
-                <Border CornerRadius="5" HorizontalAlignment="Center"
-                        Grid.Column="0">
+                <Border CornerRadius="8" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center">
+                    <Border.Background>
+                        <SolidColorBrush Color="AliceBlue" Opacity="0.8" />
+                    </Border.Background>
+                    <TextBlock Text="Etap:" Padding="8,3" />
+                </Border>
+                
+                <ComboBox x:Name="GroupComboBox" Grid.Column="1" Grid.Row="0" />
+                
+                <Border CornerRadius="5" HorizontalAlignment="Center" Margin="3"
+                        Grid.Column="0" Grid.Row="1">
                     <Border.Background>
                         <SolidColorBrush Color="AliceBlue" Opacity="0.8" />
                     </Border.Background>
                 
                     <TextBlock Text="Wyróżnij:" Padding="8,3" />
                 </Border>
-                <CheckBox x:Name="IsAwardedCheckBox" Grid.Column="1" VerticalAlignment="Center" >
+                <CheckBox x:Name="IsAwardedCheckBox" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Margin="3">
                     <CheckBox.LayoutTransform>
                         <ScaleTransform ScaleX="1.5" ScaleY="1.5" />
                     </CheckBox.LayoutTransform>

@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
+using StudyOrganizer.DLL.DataBase;
 using StudyOrganizer.DLL.Models;
 using StudyOrganizer.WPF.UserControls;
 using StudyOrganizer.WPF.ViewModels;
 using StudyOrganizer.WPF.Views;
-using DayOfWeek = StudyOrganizer.DLL.Models.DayOfWeek;
 
 namespace StudyOrganizer.WPF.Pages
 {
@@ -53,27 +52,27 @@ namespace StudyOrganizer.WPF.Pages
 
         private void SubjectAdded(Subject subject)
         {
-            switch (subject.WeeklyDate.Day)
+            switch (subject.Day)
             {
-                case DayOfWeek.Poniedziałek:
+                case DayOfWeek.Monday:
                     AddNewSubjectToAccordingPanel(0,subject);
                     break;
-                case DayOfWeek.Wtorek:
+                case DayOfWeek.Tuesday:
                     AddNewSubjectToAccordingPanel(1,subject);
                     break;
-                case DayOfWeek.Środa:
+                case DayOfWeek.Wednesday:
                     AddNewSubjectToAccordingPanel(2,subject);
                     break;
-                case DayOfWeek.Czwartek:
+                case DayOfWeek.Thursday:
                     AddNewSubjectToAccordingPanel(3,subject);
                     break;
-                case DayOfWeek.Piątek:
+                case DayOfWeek.Friday:
                     AddNewSubjectToAccordingPanel(4,subject);
                     break;
-                case DayOfWeek.Sobota:
+                case DayOfWeek.Saturday:
                     AddNewSubjectToAccordingPanel(5,subject);
                     break;
-                case DayOfWeek.Niedziela:
+                case DayOfWeek.Sunday:
                     AddNewSubjectToAccordingPanel(6,subject);
                     break;
                 default:
@@ -97,8 +96,8 @@ namespace StudyOrganizer.WPF.Pages
         private void SortSubjectsListByIndex(int index)
         {
             SubjectsPerDay[index].Sort((x,y) => 
-                x.Model.ThisSubject.WeeklyDate.Hour > y.Model.ThisSubject.WeeklyDate.Hour ? 1 :
-                x.Model.ThisSubject.WeeklyDate.Hour < y.Model.ThisSubject.WeeklyDate.Hour ? -1 : 0);
+                x.Model.ThisSubject.Hour > y.Model.ThisSubject.Hour ? 1 :
+                x.Model.ThisSubject.Hour < y.Model.ThisSubject.Hour ? -1 : 0);
         }
 
         private void UpdatePanel(int panelIndex)
@@ -119,27 +118,27 @@ namespace StudyOrganizer.WPF.Pages
             var toAdd = new SubjectTemplate(new SubjectTemplateModel(subject, _model.ColorMode));
             toAdd.OnDelete += SubjectDeletedHandler;
             toAdd.OnEdite += EditSubjectHandler;
-            switch (subject.WeeklyDate.Day)
+            switch (subject.Day)
             {
-                case DayOfWeek.Poniedziałek:
+                case DayOfWeek.Monday:
                     SubjectsPerDay[0].Add(toAdd);
                     break;
-                case DayOfWeek.Wtorek:
+                case DayOfWeek.Tuesday:
                     SubjectsPerDay[1].Add(toAdd);
                     break;
-                case DayOfWeek.Środa:
+                case DayOfWeek.Wednesday:
                     SubjectsPerDay[2].Add(toAdd);
                     break;
-                case DayOfWeek.Czwartek:
+                case DayOfWeek.Thursday:
                     SubjectsPerDay[3].Add(toAdd);
                     break;
-                case DayOfWeek.Piątek:
+                case DayOfWeek.Friday:
                     SubjectsPerDay[4].Add(toAdd);
                     break;
-                case DayOfWeek.Sobota:
+                case DayOfWeek.Saturday:
                     SubjectsPerDay[5].Add(toAdd);
                     break;
-                case DayOfWeek.Niedziela:
+                case DayOfWeek.Sunday:
                     SubjectsPerDay[6].Add(toAdd);
                     break;
                 default:
@@ -149,27 +148,27 @@ namespace StudyOrganizer.WPF.Pages
 
         private void SubjectDeletedHandler(Subject subject)
         {
-            switch (subject.WeeklyDate.Day)
+            switch (subject.Day)
             {
-                case DayOfWeek.Poniedziałek:
+                case DayOfWeek.Monday:
                     DeleteAndUpdateList(0,subject);
                     break;
-                case DayOfWeek.Wtorek:
+                case DayOfWeek.Tuesday:
                     DeleteAndUpdateList(1,subject);
                     break;
-                case DayOfWeek.Środa:
+                case DayOfWeek.Wednesday:
                     DeleteAndUpdateList(2,subject);
                     break;
-                case DayOfWeek.Czwartek:
+                case DayOfWeek.Thursday:
                     DeleteAndUpdateList(3,subject);
                     break;
-                case DayOfWeek.Piątek:
+                case DayOfWeek.Friday:
                     DeleteAndUpdateList(4,subject);
                     break;
-                case DayOfWeek.Sobota:
+                case DayOfWeek.Saturday:
                     DeleteAndUpdateList(5,subject);
                     break;
-                case DayOfWeek.Niedziela:
+                case DayOfWeek.Sunday:
                     DeleteAndUpdateList(6,subject);
                     break;
                 default:
@@ -178,16 +177,17 @@ namespace StudyOrganizer.WPF.Pages
         }
 
         private void DeleteAndUpdateList(int panelIndex, Subject subject)
-        {
+        {    
             _model.User.Subjects.Remove(subject);
             DayPanels[panelIndex].Children.Clear();
             SubjectsPerDay[panelIndex] = SubjectsPerDay[panelIndex].Where(x => x.Model.ThisSubject != subject).ToList();
             UpdatePanel(panelIndex);
+            new ConnectionToDb().DeleteSubject(subject.Id);
         }
 
         private void EditSubjectHandler(Subject subject)
         {
-            NewSubjectView view = new NewSubjectView(new NewSubjectViewModel(_model.ColorMode));
+            NewSubjectView view = new NewSubjectView(new NewSubjectViewModel(_model.ColorMode, _model.User.UserId));
             Subject subjectInput = view.ShowAndGetSubject();
             if (subjectInput != null)
             {

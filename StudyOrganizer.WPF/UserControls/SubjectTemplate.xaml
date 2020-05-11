@@ -29,7 +29,10 @@
             
             <TextBlock Text="{Binding Path=ThisSubject.Name}" TextAlignment="Center" Margin="3,15,3,3" FontSize="18" />
             <TextBlock Text="{Binding Path=ThisSubject.Type}" TextAlignment="Center" Margin="2" FontSize="16" />
-            <TextBlock Text="{Binding Path=ThisSubject.WeeklyDate}" TextAlignment="Center" Margin="3" FontSize="14" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="3">
+                <TextBlock Text="{Binding Path=ThisSubject.Day}" TextAlignment="Center" Margin="5,0" FontSize="14" />
+                <TextBlock Text="{Binding Path=ThisSubject.Hour}" TextAlignment="Center" Margin="5,0" FontSize="14" />
+            </StackPanel>
             
             <StackPanel Margin="8,16" Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button DockPanel.Dock="Left" Style="{StaticResource ImgButtonStyle}" Click="Delete_OnClick">
