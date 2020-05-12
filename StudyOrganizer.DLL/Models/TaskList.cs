@@ -48,9 +48,16 @@ namespace StudyOrganizer.DLL.Models
         }
     }
 
+    public enum TaskGroup
+    {
+        Planned, Actual, Realized
+    }
+
     [Serializable]
     public class SchoolTask : INotifyPropertyChanged
     {
+        public int Id { get; private set; }
+        public int TaskListId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
 
@@ -67,11 +74,15 @@ namespace StudyOrganizer.DLL.Models
                 }
             }
         }
-
+        
+        public TaskGroup TaskGroup { get; set; }
         public DateTime Deadline { get; set; }
 
-        public SchoolTask(string title, string description, bool isAwarded, DateTime deadline)
+        public SchoolTask(int id, int taskListId, string title, string description, bool isAwarded,TaskGroup taskGroup, DateTime deadline)
         {
+            Id = id;
+            TaskListId = taskListId;
+            TaskGroup = taskGroup;    
             Title = title;
             Description = description;
             IsAwarded = isAwarded;

@@ -6,16 +6,19 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using StudyOrganizer.DLL.Annotations;
+using StudyOrganizer.DLL.DataBase;
 
 namespace StudyOrganizer.DLL.Models
 {
     [Serializable]
     public class User : INotifyPropertyChanged
     {
+        public int UserId { get; private set; }
         private string _name;
         private string _study;
-        private int _semester;
+        private int _semester;    
         private string _login;
+        private string _password;
 
         public string Name
         {
@@ -53,28 +56,48 @@ namespace StudyOrganizer.DLL.Models
                 OnPropertyChanged();
             }
         }
+        public string Password
+        {
+            get => _password;
+            set
+            {
+                _password = value;
+                OnPropertyChanged();
+            }
+        }
 
         public SchoolTaskList TaskList { get; set; }
         public ObservableCollection<Subject> Subjects { get; set; }
 
+<<<<<<< HEAD
         public User(string name, string study, int semester, string login, ObservableCollection<Subject> subjects, SchoolTaskList task)
+=======
+        public User(int id,string name, string study, in int semester, string login, string password)
+>>>>>>> developer
         {
+            UserId = id;
             Name = name;
             Study = study;
             Semester = semester;
+            Password = password;
             Login = login;
-            TaskList = task;
-            Subjects = subjects;
+            LoadLists();
         }
 
-        public User(string name, string study, in int semester, string login)
+        private void LoadLists()
         {
+<<<<<<< HEAD
             Name = name;
             Study = study;
             Semester = semester;
             Login = login;
             Subjects = new ObservableCollection<Subject>();
             TaskList = new SchoolTaskList();
+=======
+            ConnectionToDb dbConnection = new ConnectionToDb();
+            TaskList = dbConnection.GetTaskList(UserId);
+            Subjects = dbConnection.GetSubjectList(UserId);
+>>>>>>> developer
         }
 
         protected bool Equals(User other)

@@ -1,21 +1,22 @@
 ﻿using System;
-using System.Linq;
 using System.Windows;
+using StudyOrganizer.DLL.DataBase;
 using StudyOrganizer.DLL.Exceptions;
 using StudyOrganizer.DLL.Models;
 using StudyOrganizer.WPF.ViewModels;
-using DayOfWeek = StudyOrganizer.DLL.Models.DayOfWeek;
 
 namespace StudyOrganizer.WPF.Views
 {
     public partial class NewSubjectView : Window
     {
         private NewSubjectViewModel _model;
+        private ConnectionToDb dbConnection;
         public NewSubjectView(NewSubjectViewModel model)
         {
             InitializeComponent();
             _model = model;
             DataContext = _model;
+            dbConnection = new ConnectionToDb();
         }
 
         public Subject ShowAndGetSubject()
@@ -42,7 +43,35 @@ namespace StudyOrganizer.WPF.Views
             {
                 MessageBox.Show(ex.Message,"Lack Of Information",MessageBoxButton.OK,MessageBoxImage.Error);
             }
+<<<<<<< HEAD
+=======
+
+            try
+            {
+                LoadSubjectToDB();
+                _model._returnedSubject = GetSubjectFromDB();
+                Close();
+            }
+            catch (InvalidOperationException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
+
+        private void LoadSubjectToDB()
+        {
+            SubjectTypes type = (SubjectTypes) Enum.Parse(typeof(SubjectTypes), TypeComboBox.SelectedItem.ToString());
+            string day = DayOfWeekComboBox.SelectedItem.ToString();
+            string name = SubjectName.Text;
+            int hour = (int) HourSlider.Value;
+            dbConnection.InsertSubject(_model.SubjectListId, name, type, day, hour);
+>>>>>>> developer
+        }
+
+        private Subject GetSubjectFromDB()
+        {
+            return dbConnection.GetSubject(SubjectName.Text);
+;        }
 
         private void Validate()
         {

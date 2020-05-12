@@ -14,72 +14,119 @@ namespace StudyOrganizer.WPF.Pages
     public partial class AccountPage : Page
     {
         public MenuViewModel Model { get; }
-        private string _oldName;
-        private string _oldLogin;
-        private string _oldStudy;
-        private int _oldSemester;
+        private UpdatesTransmitter _transmitter;
         public AccountPage(MenuViewModel model)
         {
             Model = model;
             DataContext = model;
+            _transmitter = new UpdatesTransmitter(model.User);
             InitializeComponent();
         }
 
-        private void Save_OnExecuted(object sender, ExecutedRoutedEventArgs e)
+        private void Name_OnLostFocus(object sender, RoutedEventArgs e)
         {
-            try
+            TextBox box = sender as TextBox;
+            if (string.IsNullOrEmpty(box.Text))
             {
-                UpdateContent();
-                WarningOutput.Text = "Saved";
+                box.Text = Model.User.Name;
+                WarningOutput.Text = "Pole imienia nie może być puste";
+                WarningOutput.Foreground = Brushes.Red;
+            }
+            else
+            {
+                _transmitter.UpdateName(box.Text);
+                WarningOutput.Text = "Zapisano";
                 WarningOutput.Foreground = Brushes.Khaki;
             }
-            catch (InvalidInputException exception)
-            {
-                WarningOutput.Text = exception.Message;
-                WarningOutput.Foreground = Brushes.Red;
-                Model.User.Login = _oldLogin;
-            }
-            
-            if (Model.User.Login == _oldLogin || UserDataBase.IsLoginFree(LoginView.FILE,Model.User.Login)){}
-        }
-
-        private void Save_OnCanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = true;
-        }
-
-        private void AccountPage_OnLoaded(object sender, RoutedEventArgs e)
-        {
-            LoadContent();
-        }
-
-        private void LoadContent()
-        {
-            _oldName = Model.User.Name;
-            _oldLogin = Model.User.Login;
-            _oldStudy = Model.User.Study;
-            _oldSemester = Model.User.Semester;
-        }
-
-        private void UpdateContent()
-        {
-            if (Model.User.Login != _oldLogin)
-            {
-                if (!UserDataBase.IsLoginFree(LoginView.FILE,Model.User.Login))
-                {
-                    throw new InvalidInputException("User already in Database.");
-                }
-                UserDataBase.UpdateLogin(LoginView.FILE,Model.User.Login,_oldLogin);
-            }
-            LoadContent();
         }
         
-        private void AccountPage_OnUnloaded(object sender, RoutedEventArgs e)
+        private void Login_OnLostFocus(object sender, RoutedEventArgs e)
         {
-            Model.User.Name = _oldName;
-            Model.User.Login = _oldLogin;
-            Model.User.Study = _oldStudy;
-            Model.User.Semester = _oldSemester;
+            TextBox box = sender as TextBox;
+            if (string.IsNullOrEmpty(box.Text))
+            {
+                box.Text = Model.User.Login;
+                WarningOutput.Text = "Pole loginu nie może być puste";
+                WarningOutput.Foreground = Brushes.Red;
+            }
+            else
+            {   
+                if (_transmitter.IsLoginFree(box.Text))
+                {
+                    _transmitter.UpdateLogin(box.Text);
+                    WarningOutput.Text = "Zapisano";
+                    WarningOutput.Foreground = Brushes.Khaki;
+                }
+                else if (!Model.User.Login.Equals(box.Text))
+                {
+                    box.Text = Model.User.Login;
+                    WarningOutput.Text = "Login zajęty.";
+                    WarningOutput.Foreground = Brushes.Red;
+                }
+            }
+        }
+        
+        private void Password_OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox box = sender as TextBox;
+            try
+            {
+                Validator.PasswordValidation(box.Text);
+                _transmitter.UpdatePassword(box.Text);
+                WarningOutput.Text = "Zapisano";
+                WarningOutput.Foreground = Brushes.Khaki;
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                box.Text = Model.User.Password;
+                WarningOutput.Text = "Hasło powinno składać się z 8 znaków zawierających \nwielką literę i małą literę lub znaki specjalne";
+                WarningOutput.Foreground = Brushes.Red;
+            }
+        }
+        
+        private void Study_OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox box = sender as TextBox;
+            if (string.IsNullOrEmpty(box.Text))
+            {
+                box.Text = Model.User.Study;
+                WarningOutput.Text = "Pole study nie może byc puste.";
+                WarningOutput.Foreground = Brushes.Red;
+            }
+            else
+            {
+                _transmitter.UpdateStudy(box.Text);
+                WarningOutput.Text = "Zapisano";
+                WarningOutput.Foreground = Brushes.Khaki;
+            }
+        }
+        
+        private void Semester_OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox box = sender as TextBox;
+            try
+            {
+                int value = Convert.ToInt32(box.Text);
+                if (value < 0)
+                {
+                    box.Text = Model.User.Semester.ToString();
+                    WarningOutput.Text = "Semestr musi być liczbą nieujemną.";
+                    WarningOutput.Foreground = Brushes.Red;
+                }
+                else
+                {
+                    _transmitter.UpdateSemester(value);
+                    WarningOutput.Text = "Zapisano";
+                    WarningOutput.Foreground = Brushes.Khaki;
+                }
+            }
+            catch (FormatException ignore)
+            {
+                box.Text = Model.User.Semester.ToString();
+                WarningOutput.Text = "Podana wartość musi być liczbą.";
+                WarningOutput.Foreground = Brushes.Red;
+            }
         }
     }
 }

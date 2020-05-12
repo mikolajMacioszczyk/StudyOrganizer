@@ -33,6 +33,12 @@
   },
   "frameworks": {
     "netcoreapp3.1": {
+      "dependencies": {
+        "MySqlConnector": {
+          "target": "Package",
+          "version": "[0.66.0, )"
+        }
+      },
       "imports": [
         "net461",
         "net462",

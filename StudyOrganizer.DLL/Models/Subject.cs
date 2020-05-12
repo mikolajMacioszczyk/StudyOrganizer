@@ -7,48 +7,28 @@ namespace StudyOrganizer.DLL.Models
     [Serializable]
     public class Subject
     {
+        public int Id { get; private set; }
+        public int SubjectListId { get; private set; }
         public string Name { get; set; }
         public SubjectTypes Type { get; set; }
-        public WeeklyDate WeeklyDate { get; set; }
+        public DayOfWeek Day { get; set; }
+        public int Hour { get; set; }
 
         private Subject() { }
 
-        public override string ToString()
+        public override string ToString()    
         {
-            return $"{Name}, {nameof(Type)}: {Type}, {WeeklyDate}";
+            return $"{Name}, {nameof(Type)}: {Type}, {Day} {Hour}";
         }
 
-        public static Builder GetBuilder() => new Builder();
-
-        public class Builder
+        public Subject(int id, int subjectListId, string name, SubjectTypes type, DayOfWeek day, int hour)
         {
-            private Subject _currentBuild;
-            public Builder()
-            {
-                _currentBuild = new Subject();
-            }
-            public Subject GetSubject()
-            {
-                return _currentBuild;
-            }
-
-            public Builder WithName(string name)
-            {
-                _currentBuild.Name = name;
-                return this;
-            }
-
-            public Builder Type(SubjectTypes type)
-            {
-                _currentBuild.Type = type;
-                return this;
-            }
-
-            public Builder DayAndHour(WeeklyDate date)
-            {
-                _currentBuild.WeeklyDate = date;
-                return this;
-            }
+            Id = id;
+            SubjectListId = subjectListId;
+            Name = name;    
+            Type = type;
+            Day = day;
+            Hour = hour;
         }
     }
 

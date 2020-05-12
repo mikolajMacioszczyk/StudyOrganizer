@@ -4,12 +4,11 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
+using StudyOrganizer.DLL.DataBase;
 using StudyOrganizer.DLL.Models;
 using StudyOrganizer.WPF.UserControls;
 using StudyOrganizer.WPF.ViewModels;
 using StudyOrganizer.WPF.Views;
-using DayOfWeek = StudyOrganizer.DLL.Models.DayOfWeek;
 
 namespace StudyOrganizer.WPF.Pages
 {
@@ -68,32 +67,8 @@ namespace StudyOrganizer.WPF.Pages
 
         private void SubjectAdded(Subject subject)
         {
-            switch (subject.WeeklyDate.Day)
-            {
-                case DayOfWeek.Poniedziałek:
-                    AddNewSubjectToAccordingPanel(0,subject);
-                    break;
-                case DayOfWeek.Wtorek:
-                    AddNewSubjectToAccordingPanel(1,subject);
-                    break;
-                case DayOfWeek.Środa:
-                    AddNewSubjectToAccordingPanel(2,subject);
-                    break;
-                case DayOfWeek.Czwartek:
-                    AddNewSubjectToAccordingPanel(3,subject);
-                    break;
-                case DayOfWeek.Piątek:
-                    AddNewSubjectToAccordingPanel(4,subject);
-                    break;
-                case DayOfWeek.Sobota:
-                    AddNewSubjectToAccordingPanel(5,subject);
-                    break;
-                case DayOfWeek.Niedziela:
-                    AddNewSubjectToAccordingPanel(6,subject);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            int panelIndex = DayPanelIndex(subject.Day);
+            AddNewSubjectToAccordingPanel(panelIndex,subject);
         }
 
         private void AddNewSubjectToAccordingPanel(int panelIndex, Subject newSubject)
@@ -103,21 +78,20 @@ namespace StudyOrganizer.WPF.Pages
             toAdd.OnDelete += SubjectDeletedHandler;
             toAdd.OnEdite += EditSubjectHandler;
             SubjectsPerDay[panelIndex].Add(toAdd);
-            
             SortSubjectsListByIndex(panelIndex);
-
             UpdatePanel(panelIndex);
         }
 
         private void SortSubjectsListByIndex(int index)
         {
             SubjectsPerDay[index].Sort((x,y) => 
-                x.Model.ThisSubject.WeeklyDate.Hour > y.Model.ThisSubject.WeeklyDate.Hour ? 1 :
-                x.Model.ThisSubject.WeeklyDate.Hour < y.Model.ThisSubject.WeeklyDate.Hour ? -1 : 0);
+                x.Model.ThisSubject.Hour > y.Model.ThisSubject.Hour ? 1 :
+                x.Model.ThisSubject.Hour < y.Model.ThisSubject.Hour ? -1 : 0);
         }
 
         private void UpdatePanel(int panelIndex)
         {
+            DayPanels[panelIndex].Children.Clear();
             foreach (var subject in SubjectsPerDay[panelIndex])
             {
                 DayPanels[panelIndex].Children.Add(subject);
@@ -135,6 +109,7 @@ namespace StudyOrganizer.WPF.Pages
             var toAdd = new SubjectTemplate(new SubjectTemplateModel(subject, _model.ColorMode));
             toAdd.OnDelete += SubjectDeletedHandler;
             toAdd.OnEdite += EditSubjectHandler;
+<<<<<<< HEAD
             switch (subject.WeeklyDate.Day)
             {
                 case DayOfWeek.Poniedziałek:
@@ -168,59 +143,66 @@ namespace StudyOrganizer.WPF.Pages
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+=======
+            int panelId = DayPanelIndex(subject.Day);
+            SubjectsPerDay[panelId].Add(toAdd);
+>>>>>>> developer
         }
 
         private void SubjectDeletedHandler(Subject subject)
         {
-            switch (subject.WeeklyDate.Day)
-            {
-                case DayOfWeek.Poniedziałek:
-                    DeleteAndUpdateList(0,subject);
-                    break;
-                case DayOfWeek.Wtorek:
-                    DeleteAndUpdateList(1,subject);
-                    break;
-                case DayOfWeek.Środa:
-                    DeleteAndUpdateList(2,subject);
-                    break;
-                case DayOfWeek.Czwartek:
-                    DeleteAndUpdateList(3,subject);
-                    break;
-                case DayOfWeek.Piątek:
-                    DeleteAndUpdateList(4,subject);
-                    break;
-                case DayOfWeek.Sobota:
-                    DeleteAndUpdateList(5,subject);
-                    break;
-                case DayOfWeek.Niedziela:
-                    DeleteAndUpdateList(6,subject);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            int panelIndex = DayPanelIndex(subject.Day);
+            Delete(panelIndex,subject);
+            UpdatePanel(panelIndex);
         }
-
-        private void DeleteAndUpdateList(int panelIndex, Subject subject)
-        {
+    
+        private void Delete(int panelIndex, Subject subject)
+        {    
             _model.User.Subjects.Remove(subject);
-            DayPanels[panelIndex].Children.Clear();
             SubjectsPerDay[panelIndex] = SubjectsPerDay[panelIndex].Where(x => x.Model.ThisSubject != subject).ToList();
+<<<<<<< HEAD
             if (SubjectsPerDay[panelIndex].Count == 0)
             {
                 StackPanels[panelIndex].Visibility = Visibility.Collapsed;
             }
             UpdatePanel(panelIndex);
+=======
+            new UpdatesTransmitter(new ConnectionToDb()).DeleteSubject(subject);
+>>>>>>> developer
         }
-
+        
         private void EditSubjectHandler(Subject subject)
         {
-            NewSubjectView view = new NewSubjectView(new NewSubjectViewModel(_model.ColorMode));
+            NewSubjectView view = new NewSubjectView(new NewSubjectViewModel(_model.ColorMode, _model.User.UserId));
             Subject subjectInput = view.ShowAndGetSubject();
             if (subjectInput != null)
             {
                 SubjectDeletedHandler(subject);
-                _model.User.Subjects.Add(subjectInput);
                 SubjectAdded(subjectInput);
+                _model.User.Subjects.Add(subject);
+            }
+        }
+
+        private int DayPanelIndex(DayOfWeek dayOfWeek)
+        {
+            switch (dayOfWeek)
+            {
+                case DayOfWeek.Sunday:
+                    return 6;
+                case DayOfWeek.Monday:
+                    return 0;
+                case DayOfWeek.Tuesday:
+                    return 1;
+                case DayOfWeek.Wednesday:
+                    return 2;
+                case DayOfWeek.Thursday:
+                    return 3;
+                case DayOfWeek.Friday:
+                    return 4;
+                case DayOfWeek.Saturday:
+                    return 5;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(dayOfWeek), dayOfWeek, null);
             }
         }
     }

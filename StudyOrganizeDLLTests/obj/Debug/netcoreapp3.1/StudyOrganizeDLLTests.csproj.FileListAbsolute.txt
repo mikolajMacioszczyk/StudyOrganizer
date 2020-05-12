@@ -94,3 +94,4 @@ D:\C#\StudyOrganizer\StudyOrganizeDLLTests\obj\Debug\netcoreapp3.1\StudyOrganize
 D:\C#\StudyOrganizer\StudyOrganizeDLLTests\obj\Debug\netcoreapp3.1\StudyOrganizeDLLTests.csproj.CopyComplete
 D:\C#\StudyOrganizer\StudyOrganizeDLLTests\obj\Debug\netcoreapp3.1\StudyOrganizeDLLTests.dll
 D:\C#\StudyOrganizer\StudyOrganizeDLLTests\obj\Debug\netcoreapp3.1\StudyOrganizeDLLTests.pdb
+D:\C#\StudyOrganizer\StudyOrganizeDLLTests\bin\Debug\netcoreapp3.1\MySqlConnector.dll

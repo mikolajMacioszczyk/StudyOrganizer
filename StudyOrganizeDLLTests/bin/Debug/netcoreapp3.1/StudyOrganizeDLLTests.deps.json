@@ -336,6 +336,14 @@
           "System.Runtime.InteropServices": "4.3.0"
         }
       },
+      "MySqlConnector/0.66.0": {
+        "runtime": {
+          "lib/netcoreapp3.0/MySqlConnector.dll": {
+            "assemblyVersion": "0.66.0.0",
+            "fileVersion": "0.66.0.0"
+          }
+        }
+      },
       "NETStandard.Library/2.0.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "1.1.0"
@@ -867,6 +875,9 @@
         }
       },
       "StudyOrganizer.DLL/1.0.0": {
+        "dependencies": {
+          "MySqlConnector": "0.66.0"
+        },
         "runtime": {
           "StudyOrganizer.DLL.dll": {}
         }
@@ -948,6 +959,13 @@
       "sha512": "sha512-Lw1/VwLH1yxz6SfFEjVRCN0pnflLEsWgnV4qsdJ512/HhTwnKXUG+zDQ4yTO3K/EJQemGoNaBHX5InISNKTzUQ==",
       "path": "microsoft.win32.registry/4.3.0",
       "hashPath": "microsoft.win32.registry.4.3.0.nupkg.sha512"
+    },
+    "MySqlConnector/0.66.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-laGcF5yxoWsBaoYJVkJXxsxiyIpz2lQn8FobpZiSGTWHEJQfhIlKHxhmXyUwD9WOsINKYJ3kmGNqkFojZW3VSA==",
+      "path": "mysqlconnector/0.66.0",
+      "hashPath": "mysqlconnector.0.66.0.nupkg.sha512"
     },
     "NETStandard.Library/2.0.0": {
       "type": "package",
