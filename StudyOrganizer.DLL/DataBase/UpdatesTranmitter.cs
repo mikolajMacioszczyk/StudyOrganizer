@@ -29,6 +29,11 @@ namespace StudyOrganizer.DLL.DataBase
             _dbConnection = new ConnectionToDb();
         }
 
+        public bool IsLoginFree(string login)
+        {
+            return _dbConnection.IsLoginFree(login);
+        }
+
         public void UpdateLogin(string login)
         {
             if (!string.IsNullOrEmpty(login) && _dbConnection.IsLoginFree(login))
@@ -120,6 +125,55 @@ namespace StudyOrganizer.DLL.DataBase
         {    
             _dbConnection.UpdateSchoolTask(task.Id, task.TaskListId,task.Title, task.Description, task.TaskGroup, task.IsAwarded,deadline);
             task.Deadline = deadline;
+        }
+
+        public void DeleteSubject(Subject toDelete)
+        {
+            if (toDelete == null)
+            {
+                return;
+            }
+            _dbConnection.DeleteSubject(toDelete.Id);
+        }
+
+        public void UpdateSubjectName(Subject subject, string name)
+        {
+            if (!string.IsNullOrEmpty(name) && subject != null)
+            {
+                try
+                {
+                    _dbConnection.UpdateSubjectEqualityData(subject.Id, name, subject.Type);
+                    subject.Name = name;
+                }
+                catch (MySqlException ignore) { }
+            }
+        }
+        
+        public void UpdateSubjectType(Subject subject, SubjectTypes type)
+        {
+            if (subject != null)
+            {
+                _dbConnection.UpdateSubjectEqualityData(subject.Id, subject.Name, type);
+                subject.Type = type;
+            }
+        }
+        
+        public void UpdateSubjectDay(Subject subject, DayOfWeek day)
+        {
+            if (subject != null)
+            {
+                _dbConnection.UpdateSubject(subject.Id, subject.SubjectListId, subject.Name, subject.Type, day.ToString(), subject.Hour);
+                subject.Day = day;
+            }
+        }
+        
+        public void UpdateSubjectHour(Subject subject, int hour)
+        {
+            if (subject != null)
+            {
+                _dbConnection.UpdateSubject(subject.Id, subject.SubjectListId, subject.Name, subject.Type, subject.Day.ToString(), hour);
+                subject.Hour = hour;
+            }
         }
     }
 }

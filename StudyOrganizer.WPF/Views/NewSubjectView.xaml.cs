@@ -34,11 +34,18 @@ namespace StudyOrganizer.WPF.Views
             catch (InvalidInputException ex)
             {
                 MessageBox.Show(ex.Message,"Lack Of Information",MessageBoxButton.OK,MessageBoxImage.Error);
-            } 
-            
-            LoadSubjectToDB();
-            _model._returnedSubject = GetSubjectFromDB();
-            Close();
+            }
+
+            try
+            {
+                LoadSubjectToDB();
+                _model._returnedSubject = GetSubjectFromDB();
+                Close();
+            }
+            catch (InvalidOperationException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void LoadSubjectToDB()

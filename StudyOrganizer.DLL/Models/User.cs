@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -66,7 +67,7 @@ namespace StudyOrganizer.DLL.Models
         }
 
         public SchoolTaskList TaskList { get; set; }
-        public List<Subject> Subjects { get; set; }
+        public ObservableCollection<Subject> Subjects { get; set; }
 
         public User(int id,string name, string study, in int semester, string login, string password)
         {

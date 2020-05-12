@@ -76,18 +76,24 @@ namespace StudyOrganizer.DLL.DataBase
                 throw new InvalidInputException("Name and day cannot be empty");
             }
             char subjectType = DetermineType(type);
+            string canUpdateQuery =
+                $"SELECT COUNT(*) FROM subject WHERE name = '{subjectName}' and subject_type = '{subjectType}'";
             string query =
                 $"INSERT INTO subject (subject_list_id, name, subject_type, day, hour) VALUES ('{subjectListId}', '{subjectName}', '{subjectType.ToString()}', '{day}', '{hour}')";
             if (this.OpenConnection())
             {
+                MySqlCommand canExecuteCommand = new MySqlCommand(canUpdateQuery,_connection);
                 MySqlCommand cmd = new MySqlCommand(query,_connection);
-                try
+                int amount = int.Parse(canExecuteCommand.ExecuteScalar() + "");
+                if (amount==0)
                 {
                     cmd.ExecuteNonQuery();
+                    this.CloseConnection();
                 }
-                finally
+                else
                 {
                     this.CloseConnection();
+                    throw new InvalidOperationException("Subject already in database");
                 }
             }
         }
@@ -258,13 +264,45 @@ namespace StudyOrganizer.DLL.DataBase
         public void UpdateSubject(int subjectId, int subjectLstId, string name, SubjectTypes type, string day, int hour)
         {
             char subjectType =DetermineType(type);
+            string canUpdateQuery =
+                $"SELECT COUNT(*) FROM subject WHERE name = '{name}' and subject_type = '{subjectType}'";
             string query = $"UPDATE subject SET subject_list_id = '{subjectLstId}', name = '{name}', subject_type = '{subjectType}', day = '{day}', hour = '{hour}' " +
                            $"WHERE id = {subjectId}";
             if (this.OpenConnection())
             {
+                MySqlCommand canExecuteCommand = new MySqlCommand(canUpdateQuery, _connection);
                 MySqlCommand cmd = new MySqlCommand(query, _connection);
-                cmd.ExecuteNonQuery();
+                int amount = int.Parse(canExecuteCommand.ExecuteScalar()+"");
+                if (amount==1)
+                {
+                    cmd.ExecuteNonQuery();
+                }
                 this.CloseConnection();
+            }
+        }
+
+        public void UpdateSubjectEqualityData(int subjectId, string name, SubjectTypes type)
+        {    
+            char subjectType =DetermineType(type);
+            string canUpdateQuery =
+                $"SELECT COUNT(*) FROM subject WHERE name = '{name}' and subject_type = '{subjectType}'";
+            string query = $"UPDATE subject SET name = '{name}', subject_type = '{subjectType}' WHERE id = {subjectId}";
+            if (this.OpenConnection())
+            {
+                MySqlCommand canExecuteCommand = new MySqlCommand(canUpdateQuery, _connection);
+                MySqlCommand cmd = new MySqlCommand(query, _connection);
+                int amount = int.Parse(canExecuteCommand.ExecuteScalar()+"");
+                if (amount==0)
+                {
+                    cmd.ExecuteNonQuery();
+                    this.CloseConnection();
+                }
+                else
+                {
+                    this.CloseConnection();
+                    throw new InvalidOperationException("Subject in database");
+                    throw new InvalidOperationException("Subject in database");
+                }
             }
         }
         
@@ -363,17 +401,19 @@ namespace StudyOrganizer.DLL.DataBase
                 MySqlCommand cmd = new MySqlCommand(query, _connection);
                 MySqlDataReader dataReader = cmd.ExecuteReader();
                 dataReader.Read();
-                int id = dataReader.GetInt32("id");
-                int subjectListId = dataReader.GetInt32("subject_list_id");
-                SubjectTypes type = DetermineType(dataReader.GetChar("subject_type"));
-                int hour = dataReader.GetInt32("hour");
-                DayOfWeek day = (DayOfWeek) Enum.Parse(typeof(DayOfWeek), dataReader.GetString("day"));
-                Subject readed = new Subject(id, subjectListId, name, type, day, hour);
+                if (dataReader.HasRows)
+                {
+                    int id = dataReader.GetInt32("id");
+                    int subjectListId = dataReader.GetInt32("subject_list_id");
+                    SubjectTypes type = DetermineType(dataReader.GetChar("subject_type"));
+                    int hour = dataReader.GetInt32("hour");
+                    DayOfWeek day = (DayOfWeek) Enum.Parse(typeof(DayOfWeek), dataReader.GetString("day"));
+                    this.CloseConnection();
+                    return new Subject(id, subjectListId, name, type, day, hour);
+                }
                 this.CloseConnection();
-                return readed;    
             }
-            this.CloseConnection();
-            throw new Exception("Something goes wrong");
+            throw new InvalidOperationException("Something goes wrong");
         }
         
         public SchoolTask GetSchoolTask(string tittle)    
@@ -444,12 +484,12 @@ namespace StudyOrganizer.DLL.DataBase
             throw new Exception("Something goes wrong");
         }
         
-        public List<Subject> GetSubjectList(int userId)
+        public ObservableCollection<Subject> GetSubjectList(int userId)
         {
             string query = $"SELECT * FROM subject where subject_list_id = '{userId}'";
             if (this.OpenConnection() ==  true)
             {
-                List<Subject> output = new List<Subject>();
+                ObservableCollection<Subject> output = new ObservableCollection<Subject>();
                 MySqlCommand cmd = new MySqlCommand(query, _connection);
                 MySqlDataReader dataReader = cmd.ExecuteReader();
                 while (dataReader.Read())

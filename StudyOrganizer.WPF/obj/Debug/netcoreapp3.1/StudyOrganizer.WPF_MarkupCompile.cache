@@ -10,10 +10,10 @@ none
 false
 TRACE;DEBUG;NETCOREAPP;NETCOREAPP3_1
 D:\C#\StudyOrganizer\StudyOrganizer.WPF\App.xaml
-12-1287328185
+12-836035304
 
-26-1620272467
-194-173851947
+261858702202
+1941470844990
 Pages\AccountPage.xaml;Pages\HomePage.xaml;Pages\SubjectsPage.xaml;Pages\TaskPage.xaml;UserControls\NavigationBar.xaml;UserControls\SubjectTemplate.xaml;UserControls\TaskTemplate.xaml;Views\LoginView.xaml;Views\MenuView.xaml;Views\NewSubjectView.xaml;Views\NewTaskView.xaml;Views\SignUpView.xaml;
 
 False

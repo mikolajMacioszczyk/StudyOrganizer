@@ -41,7 +41,7 @@ namespace StudyOrganizeDLLTests
         public void AddSubjectWithTheSameNameTwiceShouldGetException()    
         {
             dbConnection.InsertSubject(0, "TestSubject", 0, "Monday", 5);
-            Assert.Throws<MySqlException>(() => 
+            Assert.Throws<InvalidOperationException>(() => 
             dbConnection.InsertSubject(0, "TestSubject", 0, "Monday", 5));
             var loadedFromDb = dbConnection.GetSubject("TestSubject");
             Assert.AreEqual("Monday", loadedFromDb.Day.ToString());

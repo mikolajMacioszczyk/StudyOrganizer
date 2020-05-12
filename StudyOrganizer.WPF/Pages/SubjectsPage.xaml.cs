@@ -52,32 +52,8 @@ namespace StudyOrganizer.WPF.Pages
 
         private void SubjectAdded(Subject subject)
         {
-            switch (subject.Day)
-            {
-                case DayOfWeek.Monday:
-                    AddNewSubjectToAccordingPanel(0,subject);
-                    break;
-                case DayOfWeek.Tuesday:
-                    AddNewSubjectToAccordingPanel(1,subject);
-                    break;
-                case DayOfWeek.Wednesday:
-                    AddNewSubjectToAccordingPanel(2,subject);
-                    break;
-                case DayOfWeek.Thursday:
-                    AddNewSubjectToAccordingPanel(3,subject);
-                    break;
-                case DayOfWeek.Friday:
-                    AddNewSubjectToAccordingPanel(4,subject);
-                    break;
-                case DayOfWeek.Saturday:
-                    AddNewSubjectToAccordingPanel(5,subject);
-                    break;
-                case DayOfWeek.Sunday:
-                    AddNewSubjectToAccordingPanel(6,subject);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            int panelIndex = DayPanelIndex(subject.Day);
+            AddNewSubjectToAccordingPanel(panelIndex,subject);
         }
 
         private void AddNewSubjectToAccordingPanel(int panelIndex, Subject newSubject)
@@ -87,9 +63,7 @@ namespace StudyOrganizer.WPF.Pages
             toAdd.OnDelete += SubjectDeletedHandler;
             toAdd.OnEdite += EditSubjectHandler;
             SubjectsPerDay[panelIndex].Add(toAdd);
-            
             SortSubjectsListByIndex(panelIndex);
-
             UpdatePanel(panelIndex);
         }
 
@@ -102,6 +76,7 @@ namespace StudyOrganizer.WPF.Pages
 
         private void UpdatePanel(int panelIndex)
         {
+            DayPanels[panelIndex].Children.Clear();
             foreach (var subject in SubjectsPerDay[panelIndex])
             {
                 DayPanels[panelIndex].Children.Add(subject);
@@ -118,73 +93,24 @@ namespace StudyOrganizer.WPF.Pages
             var toAdd = new SubjectTemplate(new SubjectTemplateModel(subject, _model.ColorMode));
             toAdd.OnDelete += SubjectDeletedHandler;
             toAdd.OnEdite += EditSubjectHandler;
-            switch (subject.Day)
-            {
-                case DayOfWeek.Monday:
-                    SubjectsPerDay[0].Add(toAdd);
-                    break;
-                case DayOfWeek.Tuesday:
-                    SubjectsPerDay[1].Add(toAdd);
-                    break;
-                case DayOfWeek.Wednesday:
-                    SubjectsPerDay[2].Add(toAdd);
-                    break;
-                case DayOfWeek.Thursday:
-                    SubjectsPerDay[3].Add(toAdd);
-                    break;
-                case DayOfWeek.Friday:
-                    SubjectsPerDay[4].Add(toAdd);
-                    break;
-                case DayOfWeek.Saturday:
-                    SubjectsPerDay[5].Add(toAdd);
-                    break;
-                case DayOfWeek.Sunday:
-                    SubjectsPerDay[6].Add(toAdd);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            int panelId = DayPanelIndex(subject.Day);
+            SubjectsPerDay[panelId].Add(toAdd);
         }
 
         private void SubjectDeletedHandler(Subject subject)
         {
-            switch (subject.Day)
-            {
-                case DayOfWeek.Monday:
-                    DeleteAndUpdateList(0,subject);
-                    break;
-                case DayOfWeek.Tuesday:
-                    DeleteAndUpdateList(1,subject);
-                    break;
-                case DayOfWeek.Wednesday:
-                    DeleteAndUpdateList(2,subject);
-                    break;
-                case DayOfWeek.Thursday:
-                    DeleteAndUpdateList(3,subject);
-                    break;
-                case DayOfWeek.Friday:
-                    DeleteAndUpdateList(4,subject);
-                    break;
-                case DayOfWeek.Saturday:
-                    DeleteAndUpdateList(5,subject);
-                    break;
-                case DayOfWeek.Sunday:
-                    DeleteAndUpdateList(6,subject);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            int panelIndex = DayPanelIndex(subject.Day);
+            Delete(panelIndex,subject);
+            UpdatePanel(panelIndex);
         }
-
-        private void DeleteAndUpdateList(int panelIndex, Subject subject)
+    
+        private void Delete(int panelIndex, Subject subject)
         {    
             _model.User.Subjects.Remove(subject);
-            DayPanels[panelIndex].Children.Clear();
             SubjectsPerDay[panelIndex] = SubjectsPerDay[panelIndex].Where(x => x.Model.ThisSubject != subject).ToList();
-            UpdatePanel(panelIndex);
-            new ConnectionToDb().DeleteSubject(subject.Id);
+            new UpdatesTransmitter(new ConnectionToDb()).DeleteSubject(subject);
         }
-
+        
         private void EditSubjectHandler(Subject subject)
         {
             NewSubjectView view = new NewSubjectView(new NewSubjectViewModel(_model.ColorMode, _model.User.UserId));
@@ -192,8 +118,31 @@ namespace StudyOrganizer.WPF.Pages
             if (subjectInput != null)
             {
                 SubjectDeletedHandler(subject);
-                _model.User.Subjects.Add(subjectInput);
                 SubjectAdded(subjectInput);
+                _model.User.Subjects.Add(subject);
+            }
+        }
+
+        private int DayPanelIndex(DayOfWeek dayOfWeek)
+        {
+            switch (dayOfWeek)
+            {
+                case DayOfWeek.Sunday:
+                    return 6;
+                case DayOfWeek.Monday:
+                    return 0;
+                case DayOfWeek.Tuesday:
+                    return 1;
+                case DayOfWeek.Wednesday:
+                    return 2;
+                case DayOfWeek.Thursday:
+                    return 3;
+                case DayOfWeek.Friday:
+                    return 4;
+                case DayOfWeek.Saturday:
+                    return 5;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(dayOfWeek), dayOfWeek, null);
             }
         }
     }

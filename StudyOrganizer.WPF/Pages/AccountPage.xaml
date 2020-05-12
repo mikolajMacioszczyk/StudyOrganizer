@@ -6,18 +6,10 @@
       xmlns:local="clr-namespace:StudyOrganizer.WPF"
       xmlns:converters="clr-namespace:StudyOrganizer.WPF.Converters"
       mc:Ignorable="d" FontSize="20"
-      Title="AccountPage"
-      Loaded="AccountPage_OnLoaded"
-      Unloaded="AccountPage_OnUnloaded">
+      Title="AccountPage">
     <Page.Background>
         <SolidColorBrush Color="White" />
     </Page.Background>
-    <Page.CommandBindings>
-        <CommandBinding Command="Save"
-                        CanExecute="Save_OnCanExecute"
-                        Executed="Save_OnExecuted"
-                        />
-    </Page.CommandBindings>
     <Page.Resources>
         <converters:AddInfoToNameConverter x:Key="NameConverter" />
     </Page.Resources>
@@ -40,22 +32,20 @@
         <TextBlock Text="Account Settings" Margin="5,10,0,10" />
         
         <TextBlock Text="{Binding Path=User.Name, Converter={StaticResource NameConverter}, ConverterParameter='Imię: '}" />
-        <TextBox Text="{Binding Path=User.Name}" Style="{StaticResource InputBoxStyle}" />
+        <TextBox Text="{Binding Path=User.Name}" LostKeyboardFocus="Name_OnLostFocus" Style="{StaticResource InputBoxStyle}" />
         
         <TextBlock Text="{Binding Path=User.Login, Converter={StaticResource NameConverter}, ConverterParameter='Login: '}" />
-        <TextBox Text="{Binding Path=User.Login}" Style="{StaticResource InputBoxStyle}"/>
+        <TextBox Text="{Binding Path=User.Login}" LostKeyboardFocus="Login_OnLostFocus" Style="{StaticResource InputBoxStyle}" />
+        
+        <TextBlock Text="{Binding Path=User.Password, Converter={StaticResource NameConverter}, ConverterParameter='Hasło: '}" />
+        <TextBox Text="{Binding Path=User.Password}" LostKeyboardFocus="Password_OnLostFocus" Style="{StaticResource InputBoxStyle}"/>
         
         <TextBlock Text="{Binding Path=User.Study, Converter={StaticResource NameConverter}, ConverterParameter='Studia: '}" />
-        <TextBox Text="{Binding Path=User.Study}" Style="{StaticResource InputBoxStyle}"/>
+        <TextBox Text="{Binding Path=User.Study}" LostKeyboardFocus="Study_OnLostFocus" Style="{StaticResource InputBoxStyle}"/>
         
         <TextBlock Text="{Binding Path=User.Semester, Converter={StaticResource NameConverter}, ConverterParameter='Semestr: '}" />
-        <TextBox Text="{Binding Path=User.Semester}" Style="{StaticResource InputBoxStyle}"/>
+        <TextBox Text="{Binding Path=User.Semester}" LostKeyboardFocus="Semester_OnLostFocus" Style="{StaticResource InputBoxStyle}"/>
         
-        <Button Content="Save" Command="Save"
-                Background="AliceBlue" BorderBrush="{Binding Path=ColorMode.Selected.SecondColor}"
-                HorizontalAlignment="Center"
-                Padding="10,3"
-                Margin="0,10,0,5"/>
         <TextBlock x:Name="WarningOutput" Foreground="Red" FontSize="17" HorizontalAlignment="Center" />
     </StackPanel>
 </Page>

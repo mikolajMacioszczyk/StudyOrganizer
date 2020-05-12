@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using StudyOrganizer.DLL.DataBase;
 using StudyOrganizer.DLL.Models;
 using StudyOrganizer.WPF.ViewModels;
 
@@ -46,13 +47,9 @@ namespace StudyOrganizer.WPF.UserControls
             {
                 image.Source = new BitmapImage(new Uri(@"..\blank_star.png", UriKind.Relative));
             }
-            else if (path.Equals("blank_star.png"))
-            {
-                image.Source = new BitmapImage(new Uri(@"..\gold_star.png", UriKind.Relative));
-            }
             else
             {
-                MessageBox.Show(path);
+                image.Source = new BitmapImage(new Uri(@"..\gold_star.png", UriKind.Relative));
             }
             OnAwardChanged?.Invoke(_model.Type);
         }
