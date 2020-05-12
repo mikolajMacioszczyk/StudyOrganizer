@@ -10,10 +10,17 @@ none
 false
 TRACE;DEBUG;NETCOREAPP;NETCOREAPP3_1
 D:\C#\StudyOrganizer\StudyOrganizer.WPF\App.xaml
+<<<<<<< HEAD
 12615433757
 
 261244489295
 194-952757286
+=======
+12-1339104502
+
+26-67154614
+1941969351597
+>>>>>>> developer
 Pages\AccountPage.xaml;Pages\HomePage.xaml;Pages\SubjectsPage.xaml;Pages\TaskPage.xaml;UserControls\NavigationBar.xaml;UserControls\SubjectTemplate.xaml;UserControls\TaskTemplate.xaml;Views\LoginView.xaml;Views\MenuView.xaml;Views\NewSubjectView.xaml;Views\NewTaskView.xaml;Views\SignUpView.xaml;
 
 True
